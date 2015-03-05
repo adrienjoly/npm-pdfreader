@@ -1,6 +1,8 @@
 # pdfreader
 NPM module for simplifying the development of scripted / rule-based parsing of PDF files, including tabular data (tables, with automatic column detection).
 
+## Raw PDF reading
+
 The PdfReader class reads a PDF file, and calls a function on each item found while parsing that file.
 
  An item object can match one of the following objects:
@@ -10,6 +12,7 @@ The PdfReader class reads a PDF file, and calls a function on each item found wh
  - `{page:integer}`, when a new page is being parsed, provides the page number, starting at 1.
  - `{text:string, x:float, y:float, w:float, h:float...}`, represents each text with its position.
 
+Example:
 
     new PdfReader().parseFileItems("sample.pdf", function(err, item){
       if (err)
@@ -20,4 +23,20 @@ The PdfReader class reads a PDF file, and calls a function on each item found wh
         console.log(item.text);
     });
 
-coucou
+## Rule-based data extraction
+
+The Rule class can be used to define and process data extraction rules, while parsing a PDF document.
+
+Rule instances expose "accumulators": methods that defines the data extraction strategy to be used for each rule.
+
+Example:
+
+    var processItem = Rule.makeItemProcessor([
+      Rule.on(/^Hello \"(.*)\"$/).extractRegexpValues().then(displayValue),
+      Rule.on(/^Value\:/).parseNextItemValue().then(displayValue),
+      Rule.on(/^c1$/).parseTable(3).then(displayTable),
+      Rule.on(/^Values\:/).accumulateAfterHeading().then(displayValue),
+    ]);
+    new PdfReader().parseFileItems("sample.pdf", function(err, item){
+      processItem(item);
+    });
