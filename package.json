@@ -1,0 +1,35 @@
+{
+  "name": "pdfreader",
+  "version": "0.0.1",
+  "description": "Utility for simplifying the development of scripted / rule-based parsing of PDF files, including tabular data (tables, with automatic column detection).",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adrienjoly/npm-pdfreader"
+  },
+  "keywords": [
+    "pdf",
+    "parsing",
+    "convert",
+    "conversion",
+    "file",
+    "CLI",
+    "tables",
+    "data",
+    "csv",
+    "json",
+    "rules"
+  ],
+  "author": "Adrien Joly",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adrienjoly/npm-pdfreader/issues"
+  },
+  "homepage": "https://github.com/adrienjoly/npm-pdfreader",
+  "dependencies": {
+    "pdf2json": "^0.7.1"
+  }
+}
