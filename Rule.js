@@ -30,6 +30,12 @@ Rule.on = function(regexp){
   return new Rule(regexp);
 }
 
+Rule.after = function(regexp){
+  var rule = new Rule(regexp);
+  rule.skipCurrentItem = true;
+  return rule;
+}
+
 /**
  * then(): defines a function to be called after a Rule's accumulator has finished processing items.
  * fct: the function to be called after a Rule's accumulator has finished processing items.
@@ -94,6 +100,8 @@ Rule.makeItemProcessor = function(rules){
         if (accumulator) {
           terminateAccumulator();
           LOG("current accumulator:", accumulator.methodName);
+          if (rules[r].skipCurrentItem)
+            applyRulesOnNextItem = false;
           currentAccumulator = accumulator;
           delete rules[r];
           return;
