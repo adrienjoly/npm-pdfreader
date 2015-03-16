@@ -81,24 +81,29 @@ Rule.makeItemProcessor = function(rules){
       terminatePreviousAcc(currentAccumulator); // TODO: remove currentAccumulator parameter
     }
   }
+  var applyRulesOnNextItem = true;
   return function(item){
     if (!item) // last item of the file => flush buffers
       return terminateAccumulator();
     else if (!item.text)
       return;
-    for (var r in rules) {
-      var accumulator = rules[r].test(item);
-      if (accumulator) {
-        terminateAccumulator();
-        LOG("current accumulator:", accumulator.methodName);
-        currentAccumulator = accumulator;
-        delete rules[r];
-        return;
+    //LOG("ITEM:", item.text, "=> apply rules:", applyRulesOnNextItem);
+    if (applyRulesOnNextItem)
+      for (var r in rules) {
+        var accumulator = rules[r].test(item);
+        if (accumulator) {
+          terminateAccumulator();
+          LOG("current accumulator:", accumulator.methodName);
+          currentAccumulator = accumulator;
+          delete rules[r];
+          return;
+        }
       }
-    }
+    else
+      applyRulesOnNextItem = true;
     // if reaching this point, the current item matches none of the rules => accumulating data on current accumulator
     if (currentAccumulator)
-      currentAccumulator(item);
+      applyRulesOnNextItem = !currentAccumulator(item);
   };
 }
 
