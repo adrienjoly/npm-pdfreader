@@ -21,14 +21,16 @@ The PdfReader class reads a PDF file, and calls a function on each item found wh
 
 Example:
 
-    new PdfReader().parseFileItems("sample.pdf", function(err, item){
-      if (err)
-        callback(err);
-      else if (!item)
-        callback();
-      else if (item.text)
-        console.log(item.text);
-    });
+```javascript
+new PdfReader().parseFileItems("sample.pdf", function(err, item){
+  if (err)
+    callback(err);
+  else if (!item)
+    callback();
+  else if (item.text)
+    console.log(item.text);
+});
+```
 
 ## Rule-based data extraction
 
@@ -38,12 +40,14 @@ Rule instances expose "accumulators": methods that defines the data extraction s
 
 Example:
 
-    var processItem = Rule.makeItemProcessor([
-      Rule.on(/^Hello \"(.*)\"$/).extractRegexpValues().then(displayValue),
-      Rule.on(/^Value\:/).parseNextItemValue().then(displayValue),
-      Rule.on(/^c1$/).parseTable(3).then(displayTable),
-      Rule.on(/^Values\:/).accumulateAfterHeading().then(displayValue),
-    ]);
-    new PdfReader().parseFileItems("sample.pdf", function(err, item){
-      processItem(item);
-    });
+```javascript
+var processItem = Rule.makeItemProcessor([
+  Rule.on(/^Hello \"(.*)\"$/).extractRegexpValues().then(displayValue),
+  Rule.on(/^Value\:/).parseNextItemValue().then(displayValue),
+  Rule.on(/^c1$/).parseTable(3).then(displayTable),
+  Rule.on(/^Values\:/).accumulateAfterHeading().then(displayValue),
+]);
+new PdfReader().parseFileItems("sample.pdf", function(err, item){
+  processItem(item);
+});
+```
