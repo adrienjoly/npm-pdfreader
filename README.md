@@ -1,6 +1,13 @@
 # pdfreader
 NPM module for simplifying the development of scripted / rule-based parsing of PDF files, including tabular data (tables, with automatic column detection).
 
+## Installation, tests and CLI usage
+
+    npm install pdfreader
+    cd node_modules/pdfreader
+    npm test
+    node parse.js test/sample.pdf
+
 ## Raw PDF reading
 
 The PdfReader class reads a PDF file, and calls a function on each item found while parsing that file.
