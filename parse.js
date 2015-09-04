@@ -7,8 +7,14 @@ function printRawItems(filename, callback){
       callback(err);
     else if (!item)
       callback();
+    else if (item.file)
+      console.log("file =", item.file.path);
+    else if (item.page)
+      console.log("page =", item.page);
+    else if (item.x)
+      console.log([item.x, item.y, item.oc, item.A, Math.floor(item.w), item.text].join("\t"));
     else
-      console.log(item);
+      console.warn(item);
   });
 }
 
@@ -17,7 +23,7 @@ if (!filename) {
   console.error("please provide the name of a PDF file");
 }
 else {
-  console.warn("printing raw items from file:", filename);
+  console.warn("printing raw items from file:", filename, "...");
   printRawItems(filename, function(){
     console.warn("done.");
   });
