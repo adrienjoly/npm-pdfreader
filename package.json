@@ -1,6 +1,6 @@
 {
   "name": "pdfreader",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Utility for simplifying the development of scripted / rule-based parsing of PDF files, including tabular data (tables, with automatic column detection).",
   "main": "index.js",
   "scripts": {
