@@ -1,6 +1,8 @@
 # pdfreader
 
-Node.js module for simplifying the development of scripted / rule-based parsing of PDF files, including tabular data (tables, with automatic column detection).
+Read text and parse tables from PDF files.
+
+Supports tabular data with automatic column detection, and rule-based parsing.
 
 This module is meant to be run using Node.js only. **It does not work from a web browser.**
 
