@@ -32,6 +32,8 @@ new PdfReader().parseFileItems("sample.pdf", function(err, item){
 });
 ```
 
+Other example of use: [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example)
+
 ## Rule-based data extraction
 
 The Rule class can be used to define and process data extraction rules, while parsing a PDF document.
