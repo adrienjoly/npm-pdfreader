@@ -49,4 +49,19 @@ PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler){
   pdfParser.loadPDF(pdfFilePath, verbosity);
 };
 
+/**
+ * parseBuffer: calls itemHandler(error, item) on each item parsed from the pdf file received as a buffer
+ */
+PdfReader.prototype.parseBuffer = function(pdfBuffer, itemHandler){
+  itemHandler(null, { file: { buffer: pdfBuffer }});
+  var pdfParser = new PFParser();
+  pdfParser.on("pdfParser_dataError", itemHandler);
+  pdfParser.on("pdfParser_dataReady", function (pdfData){
+    forEachItem(pdfData, itemHandler);
+  });
+  var verbosity = this.options.debug ? 1 : 0;
+  pdfParser.parseBuffer(pdfBuffer, verbosity);
+};
+
+
 module.exports = PdfReader;
