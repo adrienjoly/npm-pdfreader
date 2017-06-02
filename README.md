@@ -37,6 +37,34 @@ new PdfReader().parseFileItems("sample.pdf", function(err, item){
 });
 ```
 
+## Raw PDF reading from a PDF already in memory (buffer)
+
+The PdfReader class reads a PDF file, and calls a function on each item found while parsing that file.
+
+ An item object can match one of the following objects:
+
+ - `null`, when the parsing is over, or an error occured.
+ - `{file:{path:string}}`, when a PDF file is being opened.
+ - `{page:integer}`, when a new page is being parsed, provides the page number, starting at 1.
+ - `{text:string, x:float, y:float, w:float, h:float...}`, represents each text with its position.
+
+Example:
+
+```javascript
+var fs = require("fs");
+fs.readFile("sample.pdf", (err, pdfBuffer) => {
+  // pdfBuffer contains the file content
+  new PdfReader().parseBuffer(pdfBuffer, function(err, item){
+    if (err)
+      callback(err);
+    else if (!item)
+      callback();
+    else if (item.text)
+      console.log(item.text);
+  });
+});
+```
+
 ## Example: parsing lines of text from a PDF file
 
 ![example cv resume parse convert pdf to text](https://github.com/adrienjoly/npm-pdfreader-example/raw/master/parseRows.png)
