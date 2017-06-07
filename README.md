@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/adrienjoly/npm-pdfreader.svg?style=svg)](https://circleci.com/gh/adrienjoly/npm-pdfreader)
+
 # pdfreader
 
 Read text and parse tables from PDF files.
