@@ -1,9 +1,10 @@
 {
   "name": "pdfreader",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
   "main": "index.js",
   "scripts": {
+    "test-buffer": "node parseAsBuffer.js test/sample.pdf",
     "test": "node test/test.js"
   },
   "repository": {
