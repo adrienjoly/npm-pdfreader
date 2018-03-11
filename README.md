@@ -164,3 +164,25 @@ new PdfReader().parseFileItems("sample.pdf", function(err, item){
   processItem(item);
 });
 ```
+
+## Troubleshooting & FAQ
+
+### Is it possible to parse a PDF document from a web application?
+
+Solutions exist, but this module cannot be run directly by a web browser. If you really want to use this module, you will have to integrate it into your back-end so that PDF files can be read from your server.
+
+## Problem: when I use pdfreader from my express-based node.js app, I'm getting `Cannot read property 'userAgent' of undefined`.
+
+Dmitry found out that you may need to run these instructions before including the `pdfreader` module:
+
+```js
+global.navigator = {
+  userAgent: 'node',
+}
+
+window.navigator = {
+  userAgent: 'node',
+}
+```
+
+Source: [express - TypeError: Cannot read property 'userAgent' of undefined error on node.js app run - Stack Overflow](https://stackoverflow.com/questions/49208414/typeerror-cannot-read-property-useragent-of-undefined-error-on-node-js-app-ru)
