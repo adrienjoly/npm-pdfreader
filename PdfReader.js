@@ -18,8 +18,11 @@ function forEachItem(pdf, handler){
   var pageNumber = 0;
   for (var p in pdf.data.Pages) {
     var page = pdf.data.Pages[p];
+    var number = ++pageNumber;
     handler(null, {
-      page: ++pageNumber
+      page: number,
+      width: pdf.data.Width,
+      height:pdf.data.Pages[number-1].Height
     });
     for (var t in page.Texts) {
       var item = page.Texts[t];
