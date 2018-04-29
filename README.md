@@ -25,7 +25,7 @@ The PdfReader class reads a PDF file, and calls a function on each item found wh
 
  - `null`, when the parsing is over, or an error occured.
  - `{file:{path:string}}`, when a PDF file is being opened.
- - `{page:integer}`, when a new page is being parsed, provides the page number, starting at 1.
+ - `{page:integer, width:float, height:float}`, when a new page is being parsed, provides the page number, starting at 1.
  - `{text:string, x:float, y:float, w:float, h:float...}`, represents each text with its position.
 
 Example:
