@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test-buffer": "node parseAsBuffer.js test/sample.pdf",
-    "test": "node test/test.js >test/test-snapshot.log; cat test/test-snapshot.log; "
+    "test": "node test/test.js >test/test-snapshot.log; cat test/test-snapshot.log; exit $(git --no-pager diff test/test-snapshot.log | wc -l)"
   },
   "repository": {
     "type": "git",
