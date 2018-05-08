@@ -1,0 +1,16 @@
+file = undefined
+page = 1
+12.964	5.154		left	6	Hello "world"
+12.964	7.174		left	2	Value:
+12.964	8.761		left	0	4
+14.448	10.501		left	0	c1
+20.408	10.501		left	0	c2
+28.299	10.501		left	0	c3
+14.979	11.447		left	0	1
+29.249	11.447		left	1	2.3
+19.513	12.363		left	2	hello
+27.068	12.363		left	2	world
+12.964	13.248		left	3	Values:
+12.964	14.835		left	0	1
+12.964	16.423		left	0	2
+12.964	18.01		left	0	3
