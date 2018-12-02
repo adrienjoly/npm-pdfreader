@@ -2,19 +2,19 @@
  * PdfReader: class that reads a PDF file, and calls a function on each item found while parsing that file.
  * @author Adrien Joly, http://github.com/adrienjoly
  * This content is released under the MIT License.
- * 
+ *
  * An item object can match one of the following objects:
  * - null, when the parsing is over, or an error occured.
  * - {file:{path:string}}, when a PDF file is being opened.
  * - {page:integer}, when a new page is being parsed, provides the page number, starting at 1.
  * - {text:string, x:float, y:float, w:float, h:float...}, represents each text with its position.
- * 
+ *
  **/
 
 var LOG = require("./lib/LOG.js");
 var PFParser = require("pdf2json/pdfparser"); // doc: https://github.com/modesty/pdf2json
 
-function forEachItem(pdf, handler){
+function forEachItem(pdf, handler) {
   var pageNumber = 0;
   for (var p in pdf.data.Pages) {
     var page = pdf.data.Pages[p];
@@ -22,7 +22,7 @@ function forEachItem(pdf, handler){
     handler(null, {
       page: number,
       width: pdf.data.Width,
-      height:pdf.data.Pages[number-1].Height
+      height: pdf.data.Pages[number - 1].Height
     });
     for (var t in page.Texts) {
       var item = page.Texts[t];
@@ -33,7 +33,7 @@ function forEachItem(pdf, handler){
   handler();
 }
 
-function PdfReader(options){
+function PdfReader(options) {
   LOG("PdfReader"); // only displayed if LOG.js was first loaded with `true` as init parameter
   this.options = options || {};
 }
@@ -41,11 +41,11 @@ function PdfReader(options){
 /**
  * parseFileItems: calls itemHandler(error, item) on each item parsed from the pdf file
  **/
-PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler){
-  itemHandler(null, { file: { path: pdfFilePath }});
+PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler) {
+  itemHandler(null, { file: { path: pdfFilePath } });
   var pdfParser = new PFParser();
   pdfParser.on("pdfParser_dataError", itemHandler);
-  pdfParser.on("pdfParser_dataReady", function (pdfData){
+  pdfParser.on("pdfParser_dataReady", function(pdfData) {
     forEachItem(pdfData, itemHandler);
   });
   var verbosity = this.options.debug ? 1 : 0;
@@ -55,16 +55,15 @@ PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler){
 /**
  * parseBuffer: calls itemHandler(error, item) on each item parsed from the pdf file received as a buffer
  */
-PdfReader.prototype.parseBuffer = function(pdfBuffer, itemHandler){
-  itemHandler(null, { file: { buffer: pdfBuffer }});
+PdfReader.prototype.parseBuffer = function(pdfBuffer, itemHandler) {
+  itemHandler(null, { file: { buffer: pdfBuffer } });
   var pdfParser = new PFParser();
   pdfParser.on("pdfParser_dataError", itemHandler);
-  pdfParser.on("pdfParser_dataReady", function (pdfData){
+  pdfParser.on("pdfParser_dataReady", function(pdfData) {
     forEachItem(pdfData, itemHandler);
   });
   var verbosity = this.options.debug ? 1 : 0;
   pdfParser.parseBuffer(pdfBuffer, verbosity);
 };
-
 
 module.exports = PdfReader;
