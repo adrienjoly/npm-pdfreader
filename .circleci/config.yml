@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/mern-starter
     docker:
-      - image: circleci/node:10.14.1
+      - image: circleci/node:10.14-jessie-browsers
     steps:
       - checkout # special step to check out source code to working directory
       - run:
