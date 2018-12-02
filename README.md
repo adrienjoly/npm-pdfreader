@@ -2,11 +2,18 @@
 
 Read text and parse tables from PDF files.
 
-Supports tabular data with automatic column detection, and rule-based parsing.
+Supports **tabular data** with automatic column detection, and **rule-based parsing**.
 
 Dependencies: it is based on [pdf2json](https://www.npmjs.com/package/pdf2json), which itself relies on Mozilla's [pdf.js](https://github.com/mozilla/pdf.js/).
 
 ℹ️ This module is meant to be run using Node.js only. **It does not work from a web browser.**
+
+Summary:
+
+- [Installation, tests and CLI usage](#installation-tests-and-cli-usage)
+- [Raw PDF reading](#raw-pdf-reading) (incl. examples)
+- [Rule-based data extraction](#rule-based-data-extraction)
+- [Troubleshooting & FAQ](#troubleshooting--faq)
 
 ## Installation, tests and CLI usage
 
