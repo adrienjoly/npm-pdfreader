@@ -8,7 +8,7 @@
     "test:diff:buffer": "node parseAsBuffer.js test/sample.pdf >test/test-buffer-snapshot.log; exit $(git --no-pager diff test/test-buffer-snapshot.log | wc -l)",
     "test:diff:file": "node test/test.js >test/test-snapshot.log; exit $(git --no-pager diff test/test-snapshot.log | wc -l)",
     "test:diff": "npm run -s test:diff:file && npm run -s test:diff:buffer",
-    "test:regression": "exit $(node parseAsBuffer.js test/issue-14-uncaught-error.pdf | grep Error | wc -l)",
+    "test:regression": "exit $(node parseAsBuffer.js test/issue-14-uncaught-error.pdf | grep --count Error)",
     "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
     "test": "npm run -s test:sample && npm run -s test:regression && npm run -s test:diff && npm run -s test:print:result"
   },
@@ -37,6 +37,6 @@
   },
   "homepage": "https://github.com/adrienjoly/npm-pdfreader",
   "dependencies": {
-    "pdf2json": "^0.7.1"
+    "pdf2json": "1.1.1"
   }
 }
