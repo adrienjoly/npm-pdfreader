@@ -4,6 +4,7 @@
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
   "main": "index.js",
   "scripts": {
+    "prettify": "prettier \"./**/*.js\" --write",
     "test:print:result": "echo ✅  Tests passed.",
     "test:diff:buffer": "node parseAsBuffer.js test/sample.pdf >test/test-buffer-snapshot.log; git --no-pager diff test/test-buffer-snapshot.log 1>&2; exit $(git --no-pager diff test/test-buffer-snapshot.log | wc -l)",
     "test:diff:file": "node test/test.js >test/test-snapshot.log; git --no-pager diff test/test-snapshot.log 1>&2; exit $(git --no-pager diff test/test-snapshot.log | wc -l)",
@@ -38,5 +39,8 @@
   "homepage": "https://github.com/adrienjoly/npm-pdfreader",
   "dependencies": {
     "pdf2json": "1.1.2"
+  },
+  "devDependencies": {
+    "prettier": "1.15.3"
   }
 }
