@@ -36,7 +36,7 @@ new PdfReader().parseFileItems("sample.pdf", function(err, item) {
 });
 ```
 
-## Raw PDF reading from a PDF already in memory (buffer)
+### Raw PDF reading from a PDF already in memory (buffer)
 
 The PdfReader class reads a PDF file, and calls a function on each item found while parsing that file.
 
@@ -61,7 +61,7 @@ fs.readFile("sample.pdf", (err, pdfBuffer) => {
 });
 ```
 
-## Example: parsing lines of text from a PDF file
+### Example: parsing lines of text from a PDF file
 
 ![example cv resume parse convert pdf to text](https://github.com/adrienjoly/npm-pdfreader-example/raw/master/parseRows.png)
 
@@ -96,7 +96,7 @@ new pdfreader.PdfReader().parseFileItems("CV_ErhanYasar.pdf", function(
 
 Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example).
 
-## Example: parsing a table from a PDF file
+### Example: parsing a table from a PDF file
 
 ![example cv resume parse convert pdf table to text](https://github.com/adrienjoly/npm-pdfreader-example/raw/master/parseTable.png)
 
@@ -180,7 +180,7 @@ new PdfReader().parseFileItems("sample.pdf", function(err, item) {
 
 Solutions exist, but this module cannot be run directly by a web browser. If you really want to use this module, you will have to integrate it into your back-end so that PDF files can be read from your server.
 
-## Problem: when I use pdfreader from my express-based node.js app, I'm getting `Cannot read property 'userAgent' of undefined`.
+### `Cannot read property 'userAgent' of undefined` error from an express-based node.js app
 
 Dmitry found out that you may need to run these instructions before including the `pdfreader` module:
 
