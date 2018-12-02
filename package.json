@@ -4,11 +4,12 @@
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
   "main": "index.js",
   "scripts": {
+    "test:print:result": "echo ✅  Tests passed.",
     "test:diff:buffer": "node parseAsBuffer.js test/sample.pdf >test/test-buffer-snapshot.log; exit $(git --no-pager diff test/test-buffer-snapshot.log | wc -l)",
     "test:diff:file": "node test/test.js >test/test-snapshot.log; exit $(git --no-pager diff test/test-snapshot.log | wc -l)",
-    "test:print:result": "echo ✅  Tests passed.",
-    "test:diff": "npm run -s test:diff:file && npm run -s test:diff:buffer && npm run -s test:print:result",
-    "test": "node parseAsBuffer.js test/sample.pdf && node parseAsBuffer.js test/sample.pdf"
+    "test:diff": "npm run -s test:diff:file && npm run -s test:diff:buffer",
+    "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
+    "test": "npm run -s test:sample && npm run -s test:diff && npm run -s test:print:result"
   },
   "repository": {
     "type": "git",
