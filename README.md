@@ -24,16 +24,22 @@ Summary:
 
 ## Raw PDF reading
 
-The PdfReader class reads a PDF file, and calls a function on each item found while parsing that file.
+This module exposes the `PdfReader` class, to be instantiated.
+
+Your instance has two methods for parsing a PDF. They return the same output and differ only in input: `PdfReader.parseFileItems` (as below) for a filename, and `PdfReader.parseBuffer` (see: "Raw PDF reading from a PDF already in memory (buffer)") from data that you don't want to reference from the filesystem.
+
+Whichever method you choose, it asks for a callback, which gets called each time the instance finds what it denotes as a PDF item.
 
 An item object can match one of the following objects:
 
 - `null`, when the parsing is over, or an error occured.
-- `{file:{path:string}}`, when a PDF file is being opened.
-- `{page:integer, width:float, height:float}`, when a new page is being parsed, provides the page number, starting at 1.
-- `{text:string, x:float, y:float, w:float, h:float...}`, represents each text with its position.
+- File metadata, `{file:{path:string}}`, when a PDF file is being opened, and is always the first item.
+- Page metadata, `{page:integer, width:float, height:float}`, when a new page is being parsed, provides the page number, starting at 1. This basically acts as a carriage return for the coordinates of text items to be processed.
+- Text items, `{text:string, x:float, y:float, w:float, h:float...}`, which you can think of as simple objects with a text property, and floating 2D AABB coordinates on the page.
 
-Example:
+It's up to your callback to process these items into a data structure of your choice, and also to handle any errors thrown to it.
+
+For example:
 
 ```javascript
 new PdfReader().parseFileItems("sample.pdf", function(err, item) {
@@ -45,16 +51,7 @@ new PdfReader().parseFileItems("sample.pdf", function(err, item) {
 
 ### Raw PDF reading from a PDF already in memory (buffer)
 
-The PdfReader class reads a PDF file, and calls a function on each item found while parsing that file.
-
-An item object can match one of the following objects:
-
-- `null`, when the parsing is over, or an error occured.
-- `{file:{path:string}}`, when a PDF file is being opened.
-- `{page:integer}`, when a new page is being parsed, provides the page number, starting at 1.
-- `{text:string, x:float, y:float, w:float, h:float...}`, represents each text with its position.
-
-Example:
+As above, but reading from a buffer in memory rather than from a file referenced by path. For example:
 
 ```javascript
 var fs = require("fs");
