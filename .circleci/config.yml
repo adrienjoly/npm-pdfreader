@@ -1,26 +1,18 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/mern-starter
     docker:
       - image: circleci/node:10.14-jessie-browsers
     steps:
       - checkout # special step to check out source code to working directory
-      - run:
-          name: update-npm
-          command: "sudo npm install -g npm@latest"
       - restore_cache: # special step to restore the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install-npm-wee
-          command: npm install
+      - run: npm install
       - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run: # run tests
-          name: test
-          command: npm test
+      - run: npm test
       # - run: # run coverage report
       #     name: code-coverage
       #     command: './node_modules/.bin/nyc report --reporter=text-lcov'
