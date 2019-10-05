@@ -65,6 +65,47 @@ fs.readFile("sample.pdf", (err, pdfBuffer) => {
 });
 ```
 
+### Example: reading from a buffer of an online PDF
+
+```javascript
+const https = require('https');
+const pdfreader = require('pdfreader');
+
+async function bufferize(url){
+	var hn = url.substring(url.search("//")+2); hn = hn.substring(0,hn.search("/"));
+	var pt = url.substring(url.search("//")+2); pt= pt.substring(pt.search("/"));
+	const options = {hostname: hn, port: 443, path: pt, method: 'GET'	};
+	return new Promise(function(resolve, reject) {
+		var buff = new Buffer.alloc( 0 );
+		const req = https.request(options, (res) => {
+		  res.on('data', (d) => {
+		    buff = Buffer.concat([buff, d]);
+		  });
+		  res.on('end', () => {
+		  resolve(buff);
+		  });  
+		});
+		req.on('error', (e) => {
+		  console.error('https request error: '+e);
+		});
+		req.end();	     
+	})	
+}
+
+(async () => {
+
+	var url = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+	let buffer = await bufferize(url);
+
+	new pdfreader.PdfReader().parseBuffer(buffer, function(err, item) {
+	  if (err) console.log('pdf reader error: '+err);
+	  else if (!item) console.log('end of file');
+	  else if (item.text) console.log(item.text);
+	});	  
+		  
+})()
+```
+
 ### Example: parsing lines of text from a PDF file
 
 ![example cv resume parse convert pdf to text](https://github.com/adrienjoly/npm-pdfreader-example/raw/master/parseRows.png)
