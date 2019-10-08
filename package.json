@@ -14,7 +14,8 @@
     "test:regression": "exit $(node parseAsBuffer.js test/issue-14-uncaught-error.pdf | grep --count Error)",
     "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
     "test:functional": "npm run -s test:sample && npm run -s test:regression && npm run -s test:diff",
-    "test": "npm run -s prettier:check && npm run -s test:functional && npm run -s test:print:result"
+    "test": "npm run -s prettier:check && npm run -s test:functional && npm run -s test:print:result",
+    "lint": "eslint app"
   },
   "repository": {
     "type": "git",
@@ -46,9 +47,15 @@
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
+    "eslint": "^5.12.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0",
     "prettier": "1.15.3",
     "semantic-release": "^15.13.12"
-  }
+  },
+  "peerDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0"
+  }  
 }
