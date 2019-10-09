@@ -148,7 +148,6 @@ async function readlines(buffer, xwidth) {
   lines = await JSON.parse(JSON.stringify(lines));
   console.log(lines);
 })();
-
 ```
 
 ### Example: parsing lines of text from a PDF file
