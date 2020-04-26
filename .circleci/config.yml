@@ -13,6 +13,7 @@ jobs:
       #       paths:
       #         - ./node_modules
       - run: npm test
+      - run: npm run prettier:check
       # - run: # run coverage report
       #     name: code-coverage
       #     command: './node_modules/.bin/nyc report --reporter=text-lcov'
