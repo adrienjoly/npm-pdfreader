@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/adrienjoly/npm-pdfreader/compare/v1.0.10...v1.1.0) (2020-04-26)
+
+
+### Features
+
+* **deps:** upgrade pdf2json to version 1.2.0 ([#50](https://github.com/adrienjoly/npm-pdfreader/issues/50)) ([0877162](https://github.com/adrienjoly/npm-pdfreader/commit/08771623aa7bf228b4a39e763e38614e79dca10c)), closes [#40](https://github.com/adrienjoly/npm-pdfreader/issues/40)
+
 ## [1.0.10](https://github.com/adrienjoly/npm-pdfreader/compare/v1.0.9...v1.0.10) (2020-04-26)
 
 
