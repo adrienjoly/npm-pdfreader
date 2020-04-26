@@ -1,20 +1,19 @@
 {
   "name": "pdfreader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
   "main": "index.js",
   "scripts": {
     "prettier:print": "prettier --list-different \"./**/*.js\" \"./**/*.md\"",
     "prettier:check": "npm run -s prettier:print 1>&2; exit $(npm run -s prettier:print | wc -l)",
     "prettier:fix": "prettier \"./**/*.js\" \"./**/*.md\" --write --end-of-line lf",
-    "test:print:result": "echo ✅  All tests passed.",
     "test:diff:buffer": "node parseAsBuffer.js test/sample.pdf >test/test-buffer-snapshot.log; git --no-pager diff test/test-buffer-snapshot.log 1>&2; exit $(git --no-pager diff test/test-buffer-snapshot.log | wc -l)",
     "test:diff:file": "node test/test.js >test/test-snapshot.log; git --no-pager diff test/test-snapshot.log 1>&2; exit $(git --no-pager diff test/test-snapshot.log | wc -l)",
     "test:diff": "npm run -s test:diff:file && npm run -s test:diff:buffer",
     "test:regression": "exit $(node parseAsBuffer.js test/issue-14-uncaught-error.pdf | grep --count Error)",
     "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
     "test:functional": "npm run -s test:sample && npm run -s test:regression && npm run -s test:diff",
-    "test": "npm run -s prettier:check && npm run -s test:functional && npm run -s test:print:result",
+    "test": "npm run -s test:functional && echo ✅  All tests passed.",
     "lint": "eslint app"
   },
   "repository": {
@@ -42,7 +41,7 @@
   },
   "homepage": "https://github.com/adrienjoly/npm-pdfreader",
   "dependencies": {
-    "pdf2json": "^1.1.8"
+    "pdf2json": "1.2.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
@@ -57,5 +56,31 @@
     "eslint": "^5.12.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0"
+  },
+  "release": {
+    "branch": "master",
+    "verifyConditions": [
+      "@semantic-release/github"
+    ],
+    "prepare": [
+      {
+        "path": "@semantic-release/changelog",
+        "changelogFile": "CHANGELOG.md"
+      },
+      "@semantic-release/npm",
+      {
+        "path": "@semantic-release/git",
+        "assets": [
+          "package.json",
+          "package-lock.json",
+          "CHANGELOG.md"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    "publish": "@semantic-release/github",
+    "success": [],
+    "fail": [],
+    "npmPublish": true
   }
 }
