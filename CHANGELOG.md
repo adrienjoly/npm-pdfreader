@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.0...v1.1.1) (2020-04-26)
+
+
+### Bug Fixes
+
+* **deps:** bump acorn from 6.3.0 to 6.4.1 ([#46](https://github.com/adrienjoly/npm-pdfreader/issues/46)) ([af61802](https://github.com/adrienjoly/npm-pdfreader/commit/af61802d1430adab8c9c56588d8a5b565910bd3a))
+
 # [1.1.0](https://github.com/adrienjoly/npm-pdfreader/compare/v1.0.10...v1.1.0) (2020-04-26)
 
 
