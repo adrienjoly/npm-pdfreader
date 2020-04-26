@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/adrienjoly/npm-pdfreader/compare/v1.0.9...v1.0.10) (2020-04-26)
+
+
+### Bug Fixes
+
+* **ci:** check formatting in separate step, after tests ([#49](https://github.com/adrienjoly/npm-pdfreader/issues/49)) ([9129b8a](https://github.com/adrienjoly/npm-pdfreader/commit/9129b8a4f860fbc674fd7485c7c0661c0344a71d))
+
 ## [1.0.9](https://github.com/adrienjoly/npm-pdfreader/compare/v1.0.8...v1.0.9) (2020-04-26)
 
 
