@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.2...v1.1.3) (2020-04-26)
+
+
+### Bug Fixes
+
+* **node:** use latest node 10 version ([#52](https://github.com/adrienjoly/npm-pdfreader/issues/52)) ([eb34ea9](https://github.com/adrienjoly/npm-pdfreader/commit/eb34ea92fea924d3d1e28b13a2e730b62a996b51))
+
 ## [1.1.2](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.1...v1.1.2) (2020-04-26)
 
 
