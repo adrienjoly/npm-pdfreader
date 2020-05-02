@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * PdfReader: class that reads a PDF file, and calls a function on each item found while parsing that file.
  * @author Adrien Joly, http://github.com/adrienjoly
