@@ -47,11 +47,15 @@ function PdfReader(options) {
  * parseFileItems: calls itemHandler(error, item) on each item parsed from the pdf file
  **/
 PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler) {
+<<<<<<< HEAD
     itemHandler(null, {
         file: {
             path: pdfFilePath
         }
     });
+=======
+    itemHandler(null, { file: { path: pdfFilePath } });
+>>>>>>> master
     var pdfParser = new PFParser();
     pdfParser.on("pdfParser_dataError", itemHandler);
     pdfParser.on("pdfParser_dataReady", function(pdfData) {
@@ -65,11 +69,15 @@ PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler) {
  * parseBuffer: calls itemHandler(error, item) on each item parsed from the pdf file received as a buffer
  */
 PdfReader.prototype.parseBuffer = function(pdfBuffer, itemHandler) {
+<<<<<<< HEAD
     itemHandler(null, {
         file: {
             buffer: pdfBuffer
         }
     });
+=======
+    itemHandler(null, { file: { buffer: pdfBuffer } });
+>>>>>>> master
     var pdfParser = new PFParser();
     pdfParser.on("pdfParser_dataError", itemHandler);
     pdfParser.on("pdfParser_dataReady", function(pdfData) {
