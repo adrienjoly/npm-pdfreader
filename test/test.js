@@ -1,18 +1,18 @@
-var LOG = require("../lib/LOG.js").toggle(false);
-var lib = require("../");
-var PdfReader = lib.PdfReader;
-var Rule = lib.Rule;
+var LOG = require('../lib/LOG.js').toggle(false)
+var lib = require('../')
+var PdfReader = lib.PdfReader
+var Rule = lib.Rule
 
-var TESTFILE = "./test/sample.pdf";
-var TESTFILE_WITH_PASSWORD = "./test/sample-with-password.pdf";
+var TESTFILE = './test/sample.pdf'
+var TESTFILE_WITH_PASSWORD = './test/sample-with-password.pdf'
 
 // step 1: print raw items
 
 function printRawItems(callback) {
   new PdfReader().parseFileItems(TESTFILE, function(err, item) {
-    if (err) callback(err);
-    else if (!item) callback();
-    else console.log(item);
+    if (err) callback(err)
+    else if (!item) callback()
+    else console.log(item)
   })
 }
 
@@ -20,10 +20,10 @@ function printRawItems(callback) {
 
 function parseData(callback) {
   function displayValue(value) {
-    console.log("extracted value:", value);
+    console.log('extracted value:', value)
   }
   function displayTable(table) {
-    for (var i = 0; i < table.length; ++i) console.log(table[i].join("\t"));
+    for (var i = 0; i < table.length; ++i) console.log(table[i].join('\t'))
   }
   var rules = [
     Rule.on(/^Hello \"(.*)\"$/)
@@ -38,34 +38,34 @@ function parseData(callback) {
     Rule.on(/^Values\:/)
       .accumulateAfterHeading()
       .then(displayValue)
-  ];
-  var processItem = Rule.makeItemProcessor(rules);
+  ]
+  var processItem = Rule.makeItemProcessor(rules)
   new PdfReader().parseFileItems(TESTFILE, function(err, item) {
-    if (err) callback(err);
+    if (err) callback(err)
     else {
-      processItem(item);
-      if (!item) callback(err, item);
+      processItem(item)
+      if (!item) callback(err, item)
     }
-  });
+  })
 }
 
 function openPDFWithPassword() {
-  new PdfReader({ password: "password" }).parseFileItems(TESTFILE_WITH_PASSWORD, function(err, item) {
+  new PdfReader({ password: 'password' }).parseFileItems(TESTFILE_WITH_PASSWORD, function(err, item) {
     // do nothing
-  });
+  })
 }
 
 // run tests
 
-console.log("\ntest 1: raw items from sample.pdf\n");
+console.log('\ntest 1: raw items from sample.pdf\n')
 printRawItems(function() {
-  console.log("\ntest 2: parse values from sample.pdf\n");
+  console.log('\ntest 2: parse values from sample.pdf\n')
   parseData(function() {
-    console.log("\ndone.\n");
+    console.log('\ndone.\n')
   })
 })
 
 // check if can open pdf with user password
 
-console.log("\ntest 3: should open sample-with-password.pdf\n");
-openPDFWithPassword();
+console.log('\ntest 3: should open sample-with-password.pdf\n')
+openPDFWithPassword()
