@@ -44,6 +44,9 @@ function PdfReader(options) {
 PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler) {
   itemHandler(null, { file: { path: pdfFilePath } });
   var pdfParser = new PFParser();
+  if (this.options.password) {
+    pdfParser.setPassword(this.options.password)
+  }
   pdfParser.on("pdfParser_dataError", itemHandler);
   pdfParser.on("pdfParser_dataReady", function(pdfData) {
     forEachItem(pdfData, itemHandler);
@@ -58,6 +61,9 @@ PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler) {
 PdfReader.prototype.parseBuffer = function(pdfBuffer, itemHandler) {
   itemHandler(null, { file: { buffer: pdfBuffer } });
   var pdfParser = new PFParser();
+  if (this.options.password) {
+    pdfParser.setPassword(this.options.password)
+  }
   pdfParser.on("pdfParser_dataError", itemHandler);
   pdfParser.on("pdfParser_dataReady", function(pdfData) {
     forEachItem(pdfData, itemHandler);
