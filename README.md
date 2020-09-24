@@ -15,7 +15,7 @@ Summary:
 - [Rule-based data extraction](#rule-based-data-extraction)
 - [Troubleshooting & FAQ](#troubleshooting--faq)
 
-## Installation, tests and CLI usage
+## Installation, tests and CLI usage (make sure node v8 or v10)
 
     npm install pdfreader
     cd node_modules/pdfreader
@@ -229,6 +229,16 @@ new pdfreader.PdfReader().parseFileItems(filename, function(err, item) {
 ```
 
 Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example).
+
+## Example: opening a PDF file with a password
+
+```javascript
+new PdfReader({ password: 'YOUR_PASSWORD' }).parseFileItems('sample-with-password.pdf', function(err, item) {
+  if (err) callback(err)
+  else if (!item) callback()
+  else if (item.text) console.log(item.text)
+})
+```
 
 ## Rule-based data extraction
 
