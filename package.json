@@ -46,6 +46,7 @@
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
+    "@semantic-release/npm": "^7.0.6",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -59,6 +60,9 @@
   },
   "release": {
     "branch": "master",
+    "plugins": [
+      "@semantic-release/npm"
+    ],
     "verifyConditions": [
       "@semantic-release/github"
     ],
