@@ -42,7 +42,7 @@ It's up to your callback to process these items into a data structure of your ch
 For example:
 
 ```javascript
-new PdfReader().parseFileItems("sample.pdf", function(err, item) {
+new PdfReader().parseFileItems("sample.pdf", function (err, item) {
   if (err) callback(err);
   else if (!item) callback();
   else if (item.text) console.log(item.text);
@@ -57,7 +57,7 @@ As above, but reading from a buffer in memory rather than from a file referenced
 var fs = require("fs");
 fs.readFile("sample.pdf", (err, pdfBuffer) => {
   // pdfBuffer contains the file content
-  new PdfReader().parseBuffer(pdfBuffer, function(err, item) {
+  new PdfReader().parseBuffer(pdfBuffer, function (err, item) {
     if (err) callback(err);
     else if (!item) callback();
     else if (item.text) console.log(item.text);
@@ -77,17 +77,17 @@ async function bufferize(url) {
   var pt = url.substring(url.search("//") + 2);
   pt = pt.substring(pt.search("/"));
   const options = { hostname: hn, port: 443, path: pt, method: "GET" };
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var buff = new Buffer.alloc(0);
-    const req = https.request(options, res => {
-      res.on("data", d => {
+    const req = https.request(options, (res) => {
+      res.on("data", (d) => {
         buff = Buffer.concat([buff, d]);
       });
       res.on("end", () => {
         resolve(buff);
       });
     });
-    req.on("error", e => {
+    req.on("error", (e) => {
       console.error("https request error: " + e);
     });
     req.end();
@@ -106,11 +106,11 @@ async function readlines(buffer, xwidth) {
   return new Promise((resolve, reject) => {
     var pdftxt = new Array();
     var pg = 0;
-    new pdfreader.PdfReader().parseBuffer(buffer, function(err, item) {
+    new pdfreader.PdfReader().parseBuffer(buffer, function (err, item) {
       if (err) console.log("pdf reader error: " + err);
       else if (!item) {
-        pdftxt.forEach(function(a, idx) {
-          pdftxt[idx].forEach(function(v, i) {
+        pdftxt.forEach(function (a, idx) {
+          pdftxt[idx].forEach(function (v, i) {
             pdftxt[idx][i].splice(1, 2);
           });
         });
@@ -121,7 +121,7 @@ async function readlines(buffer, xwidth) {
       } else if (item.text) {
         var t = 0;
         var sp = "";
-        pdftxt[pg].forEach(function(val, idx) {
+        pdftxt[pg].forEach(function (val, idx) {
           if (val[1] == item.y) {
             if (xwidth && item.x - val[2] > xwidth) {
               sp += " ";
@@ -164,10 +164,10 @@ var rows = {}; // indexed by y-position
 function printRows() {
   Object.keys(rows) // => array of y-positions (type: float)
     .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
-    .forEach(y => console.log((rows[y] || []).join("")));
+    .forEach((y) => console.log((rows[y] || []).join("")));
 }
 
-new pdfreader.PdfReader().parseFileItems("CV_ErhanYasar.pdf", function(
+new pdfreader.PdfReader().parseFileItems("CV_ErhanYasar.pdf", function (
   err,
   item
 ) {
@@ -196,31 +196,27 @@ var pdfreader = require("pdfreader");
 
 const nbCols = 2;
 const cellPadding = 40; // each cell is padded to fit 40 characters
-const columnQuantitizer = item => parseFloat(item.x) >= 20;
+const columnQuantitizer = (item) => parseFloat(item.x) >= 20;
 
 const padColumns = (array, nb) =>
   Array.apply(null, { length: nb }).map((val, i) => array[i] || []);
 // .. because map() skips undefined elements
 
-const mergeCells = cells =>
+const mergeCells = (cells) =>
   (cells || [])
-    .map(cell => cell.text)
+    .map((cell) => cell.text)
     .join("") // merge cells
     .substr(0, cellPadding)
     .padEnd(cellPadding, " "); // padding
 
-const renderMatrix = matrix =>
+const renderMatrix = (matrix) =>
   (matrix || [])
-    .map((row, y) =>
-      padColumns(row, nbCols)
-        .map(mergeCells)
-        .join(" | ")
-    )
+    .map((row, y) => padColumns(row, nbCols).map(mergeCells).join(" | "))
     .join("\n");
 
 var table = new pdfreader.TableParser();
 
-new pdfreader.PdfReader().parseFileItems(filename, function(err, item) {
+new pdfreader.PdfReader().parseFileItems(filename, function (err, item) {
   if (!item || item.page) {
     // end of file, or page
     console.log(renderMatrix(table.getMatrix()));
@@ -240,7 +236,7 @@ Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm
 ```javascript
 new PdfReader({ password: "YOUR_PASSWORD" }).parseFileItems(
   "sample-with-password.pdf",
-  function(err, item) {
+  function (err, item) {
     if (err) callback(err);
     else if (!item) callback();
     else if (item.text) console.log(item.text);
@@ -264,14 +260,12 @@ var processItem = Rule.makeItemProcessor([
   Rule.on(/^Value\:/)
     .parseNextItemValue()
     .then(displayValue),
-  Rule.on(/^c1$/)
-    .parseTable(3)
-    .then(displayTable),
+  Rule.on(/^c1$/).parseTable(3).then(displayTable),
   Rule.on(/^Values\:/)
     .accumulateAfterHeading()
-    .then(displayValue)
+    .then(displayValue),
 ]);
-new PdfReader().parseFileItems("sample.pdf", function(err, item) {
+new PdfReader().parseFileItems("sample.pdf", function (err, item) {
   processItem(item);
 });
 ```
@@ -288,11 +282,11 @@ Dmitry found out that you may need to run these instructions before including th
 
 ```js
 global.navigator = {
-  userAgent: "node"
+  userAgent: "node",
 };
 
 window.navigator = {
-  userAgent: "node"
+  userAgent: "node",
 };
 ```
 

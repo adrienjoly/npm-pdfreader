@@ -22,7 +22,7 @@ function forEachItem(pdf, handler) {
     handler(null, {
       page: number,
       width: pdf.formImage.Width,
-      height: pdf.formImage.Pages[number - 1].Height
+      height: pdf.formImage.Pages[number - 1].Height,
     });
     for (var t in page.Texts) {
       var item = page.Texts[t];
@@ -41,14 +41,14 @@ function PdfReader(options) {
 /**
  * parseFileItems: calls itemHandler(error, item) on each item parsed from the pdf file
  **/
-PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler) {
+PdfReader.prototype.parseFileItems = function (pdfFilePath, itemHandler) {
   itemHandler(null, { file: { path: pdfFilePath } });
   var pdfParser = new PFParser();
   if (this.options.password) {
     pdfParser.setPassword(this.options.password);
   }
   pdfParser.on("pdfParser_dataError", itemHandler);
-  pdfParser.on("pdfParser_dataReady", function(pdfData) {
+  pdfParser.on("pdfParser_dataReady", function (pdfData) {
     forEachItem(pdfData, itemHandler);
   });
   var verbosity = this.options.debug ? 1 : 0;
@@ -58,14 +58,14 @@ PdfReader.prototype.parseFileItems = function(pdfFilePath, itemHandler) {
 /**
  * parseBuffer: calls itemHandler(error, item) on each item parsed from the pdf file received as a buffer
  */
-PdfReader.prototype.parseBuffer = function(pdfBuffer, itemHandler) {
+PdfReader.prototype.parseBuffer = function (pdfBuffer, itemHandler) {
   itemHandler(null, { file: { buffer: pdfBuffer } });
   var pdfParser = new PFParser();
   if (this.options.password) {
     pdfParser.setPassword(this.options.password);
   }
   pdfParser.on("pdfParser_dataError", itemHandler);
-  pdfParser.on("pdfParser_dataReady", function(pdfData) {
+  pdfParser.on("pdfParser_dataReady", function (pdfData) {
     forEachItem(pdfData, itemHandler);
   });
   var verbosity = this.options.debug ? 1 : 0;

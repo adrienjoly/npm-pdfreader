@@ -9,7 +9,7 @@ var TESTFILE_WITH_PASSWORD = "./test/sample-with-password.pdf";
 // step 1: print raw items
 
 function printRawItems(callback) {
-  new PdfReader().parseFileItems(TESTFILE, function(err, item) {
+  new PdfReader().parseFileItems(TESTFILE, function (err, item) {
     if (err) callback(err);
     else if (!item) callback();
     else console.log(item);
@@ -32,15 +32,13 @@ function parseData(callback) {
     Rule.on(/^Value\:/)
       .parseNextItemValue()
       .then(displayValue),
-    Rule.on(/^c1$/)
-      .parseTable(3)
-      .then(displayTable),
+    Rule.on(/^c1$/).parseTable(3).then(displayTable),
     Rule.on(/^Values\:/)
       .accumulateAfterHeading()
-      .then(displayValue)
+      .then(displayValue),
   ];
   var processItem = Rule.makeItemProcessor(rules);
-  new PdfReader().parseFileItems(TESTFILE, function(err, item) {
+  new PdfReader().parseFileItems(TESTFILE, function (err, item) {
     if (err) callback(err);
     else {
       processItem(item);
@@ -52,7 +50,7 @@ function parseData(callback) {
 function openPDFWithPassword() {
   new PdfReader({ password: "password" }).parseFileItems(
     TESTFILE_WITH_PASSWORD,
-    function(err, item) {
+    function (err, item) {
       // do nothing
     }
   );
@@ -61,9 +59,9 @@ function openPDFWithPassword() {
 // run tests
 
 console.log("\ntest 1: raw items from sample.pdf\n");
-printRawItems(function() {
+printRawItems(function () {
   console.log("\ntest 2: parse values from sample.pdf\n");
-  parseData(function() {
+  parseData(function () {
     console.log("\ndone.\n");
   });
 });

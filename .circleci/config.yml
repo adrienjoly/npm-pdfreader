@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10-jessie
+      - image: circleci/node:10.18
     steps:
       - checkout # special step to check out source code to working directory
       #   - restore_cache: # special step to restore the dependency cache
