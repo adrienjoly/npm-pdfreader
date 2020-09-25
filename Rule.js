@@ -14,8 +14,8 @@ function Rule(regexp) {
   this.regexp = regexp;
   var self = this;
   // proxy accumulators methods
-  Object.keys(Rule.accumulators).forEach(function(name) {
-    self[name] = function() {
+  Object.keys(Rule.accumulators).forEach(function (name) {
+    self[name] = function () {
       LOG("building rule:", regexp, "->", name);
       self.methodName = name;
       self.accumulatorParams = arguments;
@@ -26,11 +26,11 @@ function Rule(regexp) {
 }
 
 // shortcut for defining Rule objects in a more concise manner
-Rule.on = function(regexp) {
+Rule.on = function (regexp) {
   return new Rule(regexp);
 };
 
-Rule.after = function(regexp) {
+Rule.after = function (regexp) {
   var rule = new Rule(regexp);
   rule.skipCurrentItem = true;
   return rule;
@@ -41,16 +41,16 @@ Rule.after = function(regexp) {
  * fct: the function to be called after a Rule's accumulator has finished processing items.
  *      the output of the accumulator will be passed as the first parameter of that function.
  **/
-Rule.prototype.then = function(fct) {
+Rule.prototype.then = function (fct) {
   var self = this;
-  this.terminate = function() {
+  this.terminate = function () {
     fct.call(self, self.output);
   };
   return this;
 };
 
 // private function that checks a PDF item against the Rule's regexp, and returns the corresponding accumulator.
-Rule.prototype.test = function(item) {
+Rule.prototype.test = function (item) {
   if (this.regexp.test(item.text)) {
     // lazy init of accumulators: build and init the accumulator on first match
     this.currentItem = item;
@@ -67,10 +67,10 @@ Rule.prototype.test = function(item) {
 };
 
 // intended to be run from accumulator, in order to process output before calling termination then() handler.
-Rule.prototype.whenDone = function(fct) {
+Rule.prototype.whenDone = function (fct) {
   var self = this;
   var then = this.terminate;
-  this.terminate = function() {
+  this.terminate = function () {
     fct.call(self);
     then();
   };
@@ -81,7 +81,7 @@ Rule.prototype.whenDone = function(fct) {
  *        each rule can only be executed once.
  * => returns a function to be called for each item by the PdfReader.
  **/
-Rule.makeItemProcessor = function(rules) {
+Rule.makeItemProcessor = function (rules) {
   var currentAccumulator = null;
   function terminateAccumulator() {
     var terminatePreviousAcc = (currentAccumulator || {}).terminate;
@@ -91,7 +91,7 @@ Rule.makeItemProcessor = function(rules) {
     }
   }
   var applyRulesOnNextItem = true;
-  return function(item) {
+  return function (item) {
     if (!item)
       // last item of the file => flush buffers
       return terminateAccumulator();
@@ -122,13 +122,13 @@ Rule.makeItemProcessor = function(rules) {
  * The output of an accumulator is stored in this.output (field of its parent Rule object).
  **/
 Rule.accumulators = {
-  stopAccumulating: function() {
-    return function() {};
-  }
+  stopAccumulating: function () {
+    return function () {};
+  },
 };
 
 // method for adding accumulators
-Rule.addAccumulator = function(methodName, methodBuilder) {
+Rule.addAccumulator = function (methodName, methodBuilder) {
   Rule.accumulators[methodName] = methodBuilder;
 };
 
@@ -136,19 +136,19 @@ Rule.addAccumulator = function(methodName, methodBuilder) {
  * This accumulator will store the values extracted by the regexp of the Rule object,
  * on the current matching PDF item, into an array.
  **/
-Rule.addAccumulator("extractRegexpValues", function() {
+Rule.addAccumulator("extractRegexpValues", function () {
   var matches = this.regexp.exec(this.currentItem.text);
   this.output = matches.slice(1);
-  return function() {}; // following lines are not to be processed by this accumulator
+  return function () {}; // following lines are not to be processed by this accumulator
 });
 
 /**
  * This accumulator will store the value of the next PDF item.
  **/
-Rule.addAccumulator("parseNextItemValue", function() {
+Rule.addAccumulator("parseNextItemValue", function () {
   var self = this,
     done = false;
-  return function(item) {
+  return function (item) {
     if (done) return;
     done = true;
     self.output = item.text;
@@ -158,7 +158,7 @@ Rule.addAccumulator("parseNextItemValue", function() {
 /**
  * This accumulator will store the text of all following PDF items into an array.
  **/
-Rule.addAccumulator("accumulateAfterHeading", function() {
+Rule.addAccumulator("accumulateAfterHeading", function () {
   var output = (this.output = []);
   return function accumulate(item) {
     output.push(item.text);
@@ -168,7 +168,7 @@ Rule.addAccumulator("accumulateAfterHeading", function() {
 /**
  * This accumulator will store the text of all following PDF items with equal x-coordinates.
  **/
-Rule.addAccumulator("accumulateFromSameX", function() {
+Rule.addAccumulator("accumulateFromSameX", function () {
   var output = (this.output = []),
     x = null;
   return function accumulate(item) {

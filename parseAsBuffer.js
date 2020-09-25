@@ -3,7 +3,7 @@ var PdfReader = require("./index.js").PdfReader;
 var fs = require("fs");
 
 function printRawItems(pdfBuffer, callback) {
-  new PdfReader().parseBuffer(pdfBuffer, function(err, item) {
+  new PdfReader().parseBuffer(pdfBuffer, function (err, item) {
     if (err) callback(err);
     else if (!item) callback();
     else if (item.file) console.log("file =", item.file.path);
@@ -25,7 +25,7 @@ if (!filename) {
   console.warn("printing raw items from file:", filename, "...");
   fs.readFile(filename, (err, pdfBuffer) => {
     if (err) console.error(err);
-    printRawItems(pdfBuffer, function() {
+    printRawItems(pdfBuffer, function () {
       console.warn("done.");
     });
   });
