@@ -1,6 +1,6 @@
 {
   "name": "pdfreader",
-  "version": "1.2.1",
+  "version": "0.0.0-development",
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
     "test:functional": "npm run -s test:sample && npm run -s test:regression && npm run -s test:diff",
     "test": "npm run -s test:functional && echo ✅  All tests passed.",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
+    "@semantic-release/npm": "^7.0.6",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -56,31 +58,5 @@
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4"
-  },
-  "release": {
-    "branch": "master",
-    "verifyConditions": [
-      "@semantic-release/github"
-    ],
-    "prepare": [
-      {
-        "path": "@semantic-release/changelog",
-        "changelogFile": "CHANGELOG.md"
-      },
-      "@semantic-release/npm",
-      {
-        "path": "@semantic-release/git",
-        "assets": [
-          "package.json",
-          "package-lock.json",
-          "CHANGELOG.md"
-        ],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
-    ],
-    "publish": "@semantic-release/github",
-    "success": [],
-    "fail": [],
-    "npmPublish": true
   }
 }
