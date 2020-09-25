@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.4...v1.2.0) (2020-09-25)
+
+
+### Features
+
+* Support password-protected PDF files ([#61](https://github.com/adrienjoly/npm-pdfreader/issues/61)) ([248af89](https://github.com/adrienjoly/npm-pdfreader/commit/248af89d79304dfa64b5785614b496e4e5d36e69)), closes [#15](https://github.com/adrienjoly/npm-pdfreader/issues/15)
+
 ## [1.1.4](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.3...v1.1.4) (2020-09-25)
 
 
