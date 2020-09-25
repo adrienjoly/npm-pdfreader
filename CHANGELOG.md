@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.3...v1.1.4) (2020-09-25)
+
+
+### Bug Fixes
+
+* Ease contributions ([#62](https://github.com/adrienjoly/npm-pdfreader/issues/62)) ([4a1fe66](https://github.com/adrienjoly/npm-pdfreader/commit/4a1fe6677d5a829049aa0c3c28dccb2f96e8e2f6))
+
 ## [1.1.3](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.2...v1.1.3) (2020-04-26)
 
 
