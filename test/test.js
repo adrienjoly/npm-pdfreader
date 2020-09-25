@@ -4,6 +4,7 @@ var PdfReader = lib.PdfReader;
 var Rule = lib.Rule;
 
 var TESTFILE = "./test/sample.pdf";
+var TESTFILE_WITH_PASSWORD = "./test/sample-with-password.pdf";
 
 // step 1: print raw items
 
@@ -48,6 +49,15 @@ function parseData(callback) {
   });
 }
 
+function openPDFWithPassword() {
+  new PdfReader({ password: "password" }).parseFileItems(
+    TESTFILE_WITH_PASSWORD,
+    function(err, item) {
+      // do nothing
+    }
+  );
+}
+
 // run tests
 
 console.log("\ntest 1: raw items from sample.pdf\n");
@@ -57,3 +67,8 @@ printRawItems(function() {
     console.log("\ndone.\n");
   });
 });
+
+// check if can open pdf with user password
+
+console.log("\ntest 3: should open sample-with-password.pdf\n");
+openPDFWithPassword();

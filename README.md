@@ -15,7 +15,7 @@ Summary:
 - [Rule-based data extraction](#rule-based-data-extraction)
 - [Troubleshooting & FAQ](#troubleshooting--faq)
 
-## Installation, tests and CLI usage
+## Installation, tests and CLI usage (make sure node v8 or v10)
 
     npm install pdfreader
     cd node_modules/pdfreader
@@ -95,10 +95,10 @@ async function bufferize(url) {
 }
 
 /*
-if second param is set then a space ' ' inserted whenever text 
-chunks are separated by more than xwidth 
+if second param is set then a space ' ' inserted whenever text
+chunks are separated by more than xwidth
 this helps in situations where words appear separated but
-this is because of x coords (there are no spaces between words) 
+this is because of x coords (there are no spaces between words)
 
 each page is a different array element
 */
@@ -234,6 +234,19 @@ new pdfreader.PdfReader().parseFileItems(filename, function(err, item) {
 ```
 
 Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example).
+
+## Example: opening a PDF file with a password
+
+```javascript
+new PdfReader({ password: "YOUR_PASSWORD" }).parseFileItems(
+  "sample-with-password.pdf",
+  function(err, item) {
+    if (err) callback(err);
+    else if (!item) callback();
+    else if (item.text) console.log(item.text);
+  }
+);
+```
 
 ## Rule-based data extraction
 

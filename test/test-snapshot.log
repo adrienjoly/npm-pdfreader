@@ -2,6 +2,9 @@
 test 1: raw items from sample.pdf
 
 { file: { path: './test/sample.pdf' } }
+
+test 3: should open sample-with-password.pdf
+
 { page: 1, width: 37.205, height: 52.618 }
 { x: 4.555,
   y: 5.154,
