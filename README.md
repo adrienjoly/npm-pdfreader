@@ -42,11 +42,11 @@ It's up to your callback to process these items into a data structure of your ch
 For example:
 
 ```javascript
-new PdfReader().parseFileItems('sample.pdf', function(err, item) {
-  if (err) callback(err)
-  else if (!item) callback()
-  else if (item.text) console.log(item.text)
-})
+new PdfReader().parseFileItems("sample.pdf", function(err, item) {
+  if (err) callback(err);
+  else if (!item) callback();
+  else if (item.text) console.log(item.text);
+});
 ```
 
 ### Raw PDF reading from a PDF already in memory (buffer)
@@ -54,44 +54,44 @@ new PdfReader().parseFileItems('sample.pdf', function(err, item) {
 As above, but reading from a buffer in memory rather than from a file referenced by path. For example:
 
 ```javascript
-var fs = require('fs')
-fs.readFile('sample.pdf', (err, pdfBuffer) => {
+var fs = require("fs");
+fs.readFile("sample.pdf", (err, pdfBuffer) => {
   // pdfBuffer contains the file content
   new PdfReader().parseBuffer(pdfBuffer, function(err, item) {
-    if (err) callback(err)
-    else if (!item) callback()
-    else if (item.text) console.log(item.text)
-  })
-})
+    if (err) callback(err);
+    else if (!item) callback();
+    else if (item.text) console.log(item.text);
+  });
+});
 ```
 
 ### Example: reading from a buffer of an online PDF
 
 ```javascript
-const https = require('https')
-const pdfreader = require('pdfreader')
+const https = require("https");
+const pdfreader = require("pdfreader");
 
 async function bufferize(url) {
-  var hn = url.substring(url.search('//') + 2)
-  hn = hn.substring(0, hn.search('/'))
-  var pt = url.substring(url.search('//') + 2)
-  pt = pt.substring(pt.search('/'))
-  const options = { hostname: hn, port: 443, path: pt, method: 'GET' }
+  var hn = url.substring(url.search("//") + 2);
+  hn = hn.substring(0, hn.search("/"));
+  var pt = url.substring(url.search("//") + 2);
+  pt = pt.substring(pt.search("/"));
+  const options = { hostname: hn, port: 443, path: pt, method: "GET" };
   return new Promise(function(resolve, reject) {
-    var buff = new Buffer.alloc(0)
+    var buff = new Buffer.alloc(0);
     const req = https.request(options, res => {
-      res.on('data', d => {
-        buff = Buffer.concat([buff, d])
-      })
-      res.on('end', () => {
-        resolve(buff)
-      })
-    })
-    req.on('error', e => {
-      console.error('https request error: ' + e)
-    })
-    req.end()
-  })
+      res.on("data", d => {
+        buff = Buffer.concat([buff, d]);
+      });
+      res.on("end", () => {
+        resolve(buff);
+      });
+    });
+    req.on("error", e => {
+      console.error("https request error: " + e);
+    });
+    req.end();
+  });
 }
 
 /*
@@ -104,49 +104,50 @@ each page is a different array element
 */
 async function readlines(buffer, xwidth) {
   return new Promise((resolve, reject) => {
-    var pdftxt = new Array()
-    var pg = 0
+    var pdftxt = new Array();
+    var pg = 0;
     new pdfreader.PdfReader().parseBuffer(buffer, function(err, item) {
-      if (err) console.log('pdf reader error: ' + err)
+      if (err) console.log("pdf reader error: " + err);
       else if (!item) {
         pdftxt.forEach(function(a, idx) {
           pdftxt[idx].forEach(function(v, i) {
-            pdftxt[idx][i].splice(1, 2)
-          })
-        })
-        resolve(pdftxt)
+            pdftxt[idx][i].splice(1, 2);
+          });
+        });
+        resolve(pdftxt);
       } else if (item && item.page) {
-        pg = item.page - 1
-        pdftxt[pg] = []
+        pg = item.page - 1;
+        pdftxt[pg] = [];
       } else if (item.text) {
-        var t = 0
-        var sp = ''
+        var t = 0;
+        var sp = "";
         pdftxt[pg].forEach(function(val, idx) {
           if (val[1] == item.y) {
             if (xwidth && item.x - val[2] > xwidth) {
-              sp += ' '
+              sp += " ";
             } else {
-              sp = ''
+              sp = "";
             }
-            pdftxt[pg][idx][0] += sp + item.text
-            t = 1
+            pdftxt[pg][idx][0] += sp + item.text;
+            t = 1;
           }
-        })
+        });
         if (t == 0) {
-          pdftxt[pg].push([item.text, item.y, item.x])
+          pdftxt[pg].push([item.text, item.y, item.x]);
         }
       }
-    })
-  })
+    });
+  });
 }
 
-;(async () => {
-  var url = 'https://www.w3.org/TR/2011/NOTE-WCAG20-TECHS-20111213/working-examples/PDF2/bookmarks.pdf'
-  var buffer = await bufferize(url)
-  var lines = await readlines(buffer)
-  lines = await JSON.parse(JSON.stringify(lines))
-  console.log(lines)
-})()
+(async () => {
+  var url =
+    "https://www.w3.org/TR/2011/NOTE-WCAG20-TECHS-20111213/working-examples/PDF2/bookmarks.pdf";
+  var buffer = await bufferize(url);
+  var lines = await readlines(buffer);
+  lines = await JSON.parse(JSON.stringify(lines));
+  console.log(lines);
+})();
 ```
 
 ### Example: parsing lines of text from a PDF file
@@ -156,27 +157,30 @@ async function readlines(buffer, xwidth) {
 Here is the code required to convert this PDF file into text:
 
 ```js
-var pdfreader = require('pdfreader')
+var pdfreader = require("pdfreader");
 
-var rows = {} // indexed by y-position
+var rows = {}; // indexed by y-position
 
 function printRows() {
   Object.keys(rows) // => array of y-positions (type: float)
     .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
-    .forEach(y => console.log((rows[y] || []).join('')))
+    .forEach(y => console.log((rows[y] || []).join("")));
 }
 
-new pdfreader.PdfReader().parseFileItems('CV_ErhanYasar.pdf', function(err, item) {
+new pdfreader.PdfReader().parseFileItems("CV_ErhanYasar.pdf", function(
+  err,
+  item
+) {
   if (!item || item.page) {
     // end of file, or page
-    printRows()
-    console.log('PAGE:', item.page)
-    rows = {} // clear rows for next page
+    printRows();
+    console.log("PAGE:", item.page);
+    rows = {}; // clear rows for next page
   } else if (item.text) {
     // accumulate text items into rows object, per line
-    ;(rows[item.y] = rows[item.y] || []).push(item.text)
+    (rows[item.y] = rows[item.y] || []).push(item.text);
   }
-})
+});
 ```
 
 Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example).
@@ -188,44 +192,45 @@ Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm
 Here is the code required to convert this PDF file into a textual table:
 
 ```js
-var pdfreader = require('pdfreader')
+var pdfreader = require("pdfreader");
 
-const nbCols = 2
-const cellPadding = 40 // each cell is padded to fit 40 characters
-const columnQuantitizer = item => parseFloat(item.x) >= 20
+const nbCols = 2;
+const cellPadding = 40; // each cell is padded to fit 40 characters
+const columnQuantitizer = item => parseFloat(item.x) >= 20;
 
-const padColumns = (array, nb) => Array.apply(null, { length: nb }).map((val, i) => array[i] || [])
+const padColumns = (array, nb) =>
+  Array.apply(null, { length: nb }).map((val, i) => array[i] || []);
 // .. because map() skips undefined elements
 
 const mergeCells = cells =>
   (cells || [])
     .map(cell => cell.text)
-    .join('') // merge cells
+    .join("") // merge cells
     .substr(0, cellPadding)
-    .padEnd(cellPadding, ' ') // padding
+    .padEnd(cellPadding, " "); // padding
 
 const renderMatrix = matrix =>
   (matrix || [])
     .map((row, y) =>
       padColumns(row, nbCols)
         .map(mergeCells)
-        .join(' | ')
+        .join(" | ")
     )
-    .join('\n')
+    .join("\n");
 
-var table = new pdfreader.TableParser()
+var table = new pdfreader.TableParser();
 
 new pdfreader.PdfReader().parseFileItems(filename, function(err, item) {
   if (!item || item.page) {
     // end of file, or page
-    console.log(renderMatrix(table.getMatrix()))
-    console.log('PAGE:', item.page)
-    table = new pdfreader.TableParser() // new/clear table for next page
+    console.log(renderMatrix(table.getMatrix()));
+    console.log("PAGE:", item.page);
+    table = new pdfreader.TableParser(); // new/clear table for next page
   } else if (item.text) {
     // accumulate text items into rows object, per line
-    table.processItem(item, columnQuantitizer(item))
+    table.processItem(item, columnQuantitizer(item));
   }
-})
+});
 ```
 
 Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example).
@@ -233,11 +238,14 @@ Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm
 ## Example: opening a PDF file with a password
 
 ```javascript
-new PdfReader({ password: 'YOUR_PASSWORD' }).parseFileItems('sample-with-password.pdf', function(err, item) {
-  if (err) callback(err)
-  else if (!item) callback()
-  else if (item.text) console.log(item.text)
-})
+new PdfReader({ password: "YOUR_PASSWORD" }).parseFileItems(
+  "sample-with-password.pdf",
+  function(err, item) {
+    if (err) callback(err);
+    else if (!item) callback();
+    else if (item.text) console.log(item.text);
+  }
+);
 ```
 
 ## Rule-based data extraction
@@ -262,10 +270,10 @@ var processItem = Rule.makeItemProcessor([
   Rule.on(/^Values\:/)
     .accumulateAfterHeading()
     .then(displayValue)
-])
-new PdfReader().parseFileItems('sample.pdf', function(err, item) {
-  processItem(item)
-})
+]);
+new PdfReader().parseFileItems("sample.pdf", function(err, item) {
+  processItem(item);
+});
 ```
 
 ## Troubleshooting & FAQ
@@ -280,12 +288,12 @@ Dmitry found out that you may need to run these instructions before including th
 
 ```js
 global.navigator = {
-  userAgent: 'node'
-}
+  userAgent: "node"
+};
 
 window.navigator = {
-  userAgent: 'node'
-}
+  userAgent: "node"
+};
 ```
 
 Source: [express - TypeError: Cannot read property 'userAgent' of undefined error on node.js app run - Stack Overflow](https://stackoverflow.com/questions/49208414/typeerror-cannot-read-property-useragent-of-undefined-error-on-node-js-app-ru)
