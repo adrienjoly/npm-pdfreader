@@ -10,9 +10,8 @@
     "test:diff:buffer": "node parseAsBuffer.js test/sample.pdf >test/test-buffer-snapshot.log; git --no-pager diff test/test-buffer-snapshot.log 1>&2; exit $(git --no-pager diff test/test-buffer-snapshot.log | wc -l)",
     "test:diff:file": "node test/test.js >test/test-snapshot.log; git --no-pager diff test/test-snapshot.log 1>&2; exit $(git --no-pager diff test/test-snapshot.log | wc -l)",
     "test:diff": "npm run -s test:diff:file && npm run -s test:diff:buffer",
-    "test:regression": "exit $(node parseAsBuffer.js test/issue-14-uncaught-error.pdf | grep --count Error)",
     "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
-    "test:functional": "npm run -s test:sample && npm run -s test:regression && npm run -s test:diff",
+    "test:functional": "npm run -s test:sample && npm run -s test:diff",
     "test": "npm run -s test:functional && echo ✅  All tests passed.",
     "lint": "eslint ."
   },
