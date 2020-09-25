@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/adrienjoly/npm-pdfreader/compare/v1.2.0...v1.2.1) (2020-09-25)
+
+
+### Bug Fixes
+
+* **deps:** Update dependencies ([#63](https://github.com/adrienjoly/npm-pdfreader/issues/63)) ([308f322](https://github.com/adrienjoly/npm-pdfreader/commit/308f322ea670ab2ec11f77e3588667674709b453))
+
 # [1.2.0](https://github.com/adrienjoly/npm-pdfreader/compare/v1.1.4...v1.2.0) (2020-09-25)
 
 
