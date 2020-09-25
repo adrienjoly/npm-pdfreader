@@ -14,7 +14,7 @@
     "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
     "test:functional": "npm run -s test:sample && npm run -s test:regression && npm run -s test:diff",
     "test": "npm run -s test:functional && echo ✅  All tests passed.",
-    "lint": "eslint app"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",

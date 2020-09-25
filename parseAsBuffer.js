@@ -24,6 +24,7 @@ if (!filename) {
 } else {
   console.warn("printing raw items from file:", filename, "...");
   fs.readFile(filename, (err, pdfBuffer) => {
+    if (err) console.error(err);
     printRawItems(pdfBuffer, function() {
       console.warn("done.");
     });
