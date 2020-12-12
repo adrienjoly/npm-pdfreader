@@ -35,7 +35,7 @@ An item object can match one of the following objects:
 - `null`, when the parsing is over, or an error occured.
 - File metadata, `{file:{path:string}}`, when a PDF file is being opened, and is always the first item.
 - Page metadata, `{page:integer, width:float, height:float}`, when a new page is being parsed, provides the page number, starting at 1. This basically acts as a carriage return for the coordinates of text items to be processed.
-- Text items, `{text:string, x:float, y:float, w:float, h:float...}`, which you can think of as simple objects with a text property, and floating 2D AABB coordinates on the page.
+- Text items, `{text:string, x:float, y:float, w:float, ...}`, which you can think of as simple objects with a text property, and floating 2D AABB coordinates on the page.
 
 It's up to your callback to process these items into a data structure of your choice, and also to handle any errors thrown to it.
 
