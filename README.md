@@ -167,20 +167,20 @@ function printRows() {
     .forEach((y) => console.log((rows[y] || []).join("")));
 }
 
-new pdfreader.PdfReader().parseFileItems("CV_ErhanYasar.pdf", function (
-  err,
-  item
-) {
-  if (!item || item.page) {
-    // end of file, or page
-    printRows();
-    console.log("PAGE:", item.page);
-    rows = {}; // clear rows for next page
-  } else if (item.text) {
-    // accumulate text items into rows object, per line
-    (rows[item.y] = rows[item.y] || []).push(item.text);
+new pdfreader.PdfReader().parseFileItems(
+  "CV_ErhanYasar.pdf",
+  function (err, item) {
+    if (!item || item.page) {
+      // end of file, or page
+      printRows();
+      console.log("PAGE:", item.page);
+      rows = {}; // clear rows for next page
+    } else if (item.text) {
+      // accumulate text items into rows object, per line
+      (rows[item.y] = rows[item.y] || []).push(item.text);
+    }
   }
-});
+);
 ```
 
 Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example).
