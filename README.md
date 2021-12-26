@@ -24,7 +24,7 @@ Summary:
 
 ## Raw PDF reading
 
-This module exposes the `PdfReader` class, to be instantiated.
+This module exposes the `PdfReader` class, to be instantiated. You can pass `{ debug: true }` to the constructor, in order to log debugging information. (useful for troubleshooting)
 
 Your instance has two methods for parsing a PDF. They return the same output and differ only in input: `PdfReader.parseFileItems` (as below) for a filename, and `PdfReader.parseBuffer` (see: "Raw PDF reading from a PDF already in memory (buffer)") from data that you don't want to reference from the filesystem.
 
