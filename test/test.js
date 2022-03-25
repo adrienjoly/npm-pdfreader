@@ -10,7 +10,7 @@ const TESTFILE_WITH_PASSWORD = "./test/sample-with-password.pdf";
 test("parse raw items from pdf file", async (t) => {
   const res = new Promise((resolve, reject) => {
     const items = [];
-    new PdfReader().parseFileItems(TESTFILE, function (err, item) {
+    new PdfReader().parseFileItems(TESTFILE, (err, item) => {
       if (err) reject(err);
       else if (!item) resolve(items);
       else items.push(item);
@@ -41,13 +41,15 @@ test("parse structured content from pdf file, using rules", async (t) => {
         ),
       Rule.on(/^Values\:/)
         .accumulateAfterHeading()
-        .then((value) => content.push({ accumulateAfterHeading: value })), // TODO: fix test so that these values are also returned
+        .then((value) => content.push({ accumulateAfterHeading: value })),
     ];
     const processItem = Rule.makeItemProcessor(rules);
-    new PdfReader().parseFileItems(TESTFILE, function (err, item) {
+    new PdfReader().parseFileItems(TESTFILE, (err, item) => {
       if (err) reject(err);
-      else if (!item) resolve(content);
-      else processItem(item);
+      else {
+        processItem(item);
+        if (!item) resolve(content);
+      }
     });
   });
   t.snapshot(await res);
@@ -69,7 +71,7 @@ test("support pdf file with password", async (t) => {
 test("sample scripts should print raw items from pdf file", async (t) => {
   const { execa } = await import("execa");
   const { stdout, stderr } = await execa("npm run test:samples", {
-    shell: true, // needed in order to run npm commands
+    shell: true, // needed in order to run npm commands with execa
   });
   t.snapshot({ stdout, stderr });
 });
