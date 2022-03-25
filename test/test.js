@@ -1,3 +1,4 @@
+const assert = require("assert");
 const test = require("ava");
 const LOG = require("../lib/LOG.js").toggle(false);
 const lib = require("../");
@@ -53,6 +54,35 @@ test("parse structured content from pdf file, using rules", async (t) => {
     });
   });
   t.snapshot(await res);
+});
+
+test("parse Table from PDF file, using TableParser", async (t) => {
+  const matrix = await new Promise((resolve, reject) => {
+    // the thresholds were determined manually, based on the horizontal position (x) for column headers
+    const colThresholds = [6.8, 9.5, 13.3, 16.7, 18.4, 28, 32, 36, Infinity];
+
+    const columnQuantitizer = (item) => {
+      const col = colThresholds.findIndex(
+        (colThreshold) => parseFloat(item.x) < colThreshold
+      );
+      assert(col >= 0, col);
+      assert(col < colThresholds.length, col);
+      // console.log(`COL ${col}\t${parseFloat(item.x)}\t${item.text}`);
+      return col;
+    };
+
+    const table = new lib.TableParser();
+    new PdfReader().parseFileItems("./test/sample-table.pdf", (err, item) => {
+      if (err) reject(err);
+      else if (!item) {
+        resolve(table.getCleanMatrix({ collisionSeparator: "" }));
+      } else if (item.text) {
+        table.processItem(item, columnQuantitizer(item));
+      }
+    });
+  });
+  // console.table(matrix);
+  t.snapshot(matrix);
 });
 
 test("support pdf file with password", async (t) => {
