@@ -17,10 +17,12 @@ Summary:
 
 ## Installation, tests and CLI usage (make sure node v8 or v10)
 
-    npm install pdfreader
-    cd node_modules/pdfreader
-    npm test
-    node parse.js test/sample.pdf
+```sh
+npm install pdfreader
+cd node_modules/pdfreader
+npm test
+node parse.js test/sample.pdf
+```
 
 ## Raw PDF reading
 
@@ -42,9 +44,11 @@ It's up to your callback to process these items into a data structure of your ch
 For example:
 
 ```javascript
-new PdfReader().parseFileItems("sample.pdf", function (err, item) {
-  if (err) callback(err);
-  else if (!item) callback();
+const { PdfReader } = require("pdfreader");
+
+new PdfReader().parseFileItems("test/sample.pdf", (err, item) => {
+  if (err) console.error("error:", err);
+  else if (!item) console.warn("end of file");
   else if (item.text) console.log(item.text);
 });
 ```
@@ -54,12 +58,14 @@ new PdfReader().parseFileItems("sample.pdf", function (err, item) {
 As above, but reading from a buffer in memory rather than from a file referenced by path. For example:
 
 ```javascript
-var fs = require("fs");
-fs.readFile("sample.pdf", (err, pdfBuffer) => {
+const fs = require("fs");
+const { PdfReader } = require("pdfreader");
+
+fs.readFile("test/sample.pdf", (err, pdfBuffer) => {
   // pdfBuffer contains the file content
-  new PdfReader().parseBuffer(pdfBuffer, function (err, item) {
-    if (err) callback(err);
-    else if (!item) callback();
+  new PdfReader().parseBuffer(pdfBuffer, (err, item) => {
+    if (err) console.error("error:", err);
+    else if (!item) console.warn("end of buffer");
     else if (item.text) console.log(item.text);
   });
 });
@@ -68,86 +74,50 @@ fs.readFile("sample.pdf", (err, pdfBuffer) => {
 ### Example: reading from a buffer of an online PDF
 
 ```javascript
-const https = require("https");
-const pdfreader = require("pdfreader");
+const get = (url) =>
+  new Promise((resolve, reject) =>
+    https
+      .get(url, (res) => {
+        const data = [];
+        res
+          .on("data", (chunk) => data.push(chunk))
+          .on("end", () => resolve(Buffer.concat(data)));
+      })
+      .on("error", reject)
+  );
 
-async function bufferize(url) {
-  var hn = url.substring(url.search("//") + 2);
-  hn = hn.substring(0, hn.search("/"));
-  var pt = url.substring(url.search("//") + 2);
-  pt = pt.substring(pt.search("/"));
-  const options = { hostname: hn, port: 443, path: pt, method: "GET" };
-  return new Promise(function (resolve, reject) {
-    var buff = new Buffer.alloc(0);
-    const req = https.request(options, (res) => {
-      res.on("data", (d) => {
-        buff = Buffer.concat([buff, d]);
-      });
-      res.on("end", () => {
-        resolve(buff);
-      });
-    });
-    req.on("error", (e) => {
-      console.error("https request error: " + e);
-    });
-    req.end();
-  });
+function addTextToLines(textLines, item) {
+  const existingLine = textLines.find(({ y }) => y === item.y);
+  if (existingLine) {
+    existingLine.text += " " + item.text;
+  } else {
+    textLines.push(item);
+  }
 }
 
-/*
-if second param is set then a space ' ' inserted whenever text
-chunks are separated by more than xwidth
-this helps in situations where words appear separated but
-this is because of x coords (there are no spaces between words)
-
-each page is a different array element
-*/
-async function readlines(buffer, xwidth) {
-  return new Promise((resolve, reject) => {
-    var pdftxt = new Array();
-    var pg = 0;
-    new pdfreader.PdfReader().parseBuffer(buffer, function (err, item) {
-      if (err) console.log("pdf reader error: " + err);
+const parseLinesPerPage = (buffer) =>
+  new Promise((resolve, reject) => {
+    const linesPerPage = [];
+    let pageNumber = 0;
+    new PdfReader().parseBuffer(buffer, (err, item) => {
+      if (err) reject(err);
       else if (!item) {
-        pdftxt.forEach(function (a, idx) {
-          pdftxt[idx].forEach(function (v, i) {
-            pdftxt[idx][i].splice(1, 2);
-          });
-        });
-        resolve(pdftxt);
-      } else if (item && item.page) {
-        pg = item.page - 1;
-        pdftxt[pg] = [];
+        resolve(linesPerPage.map((page) => page.map((line) => line.text)));
+      } else if (item.page) {
+        pageNumber = item.page - 1;
+        linesPerPage[pageNumber] = [];
       } else if (item.text) {
-        var t = 0;
-        var sp = "";
-        pdftxt[pg].forEach(function (val, idx) {
-          if (val[1] == item.y) {
-            if (xwidth && item.x - val[2] > xwidth) {
-              sp += " ";
-            } else {
-              sp = "";
-            }
-            pdftxt[pg][idx][0] += sp + item.text;
-            t = 1;
-          }
-        });
-        if (t == 0) {
-          pdftxt[pg].push([item.text, item.y, item.x]);
-        }
+        addTextToLines(linesPerPage[pageNumber], item);
       }
     });
   });
-}
 
-(async () => {
-  var url =
-    "https://www.w3.org/TR/2011/NOTE-WCAG20-TECHS-20111213/working-examples/PDF2/bookmarks.pdf";
-  var buffer = await bufferize(url);
-  var lines = await readlines(buffer);
-  lines = await JSON.parse(JSON.stringify(lines));
-  console.log(lines);
-})();
+const url = new URL(
+  "https://raw.githubusercontent.com/adrienjoly/npm-pdfreader/master/test/sample.pdf"
+);
+const buffer = get(url)
+  .then((buffer) => parseLinesPerPage(buffer))
+  .then((linesPerPage) => console.log(linesPerPage));
 ```
 
 ### Example: parsing lines of text from a PDF file
@@ -157,30 +127,31 @@ async function readlines(buffer, xwidth) {
 Here is the code required to convert this PDF file into text:
 
 ```js
-var pdfreader = require("pdfreader");
+const { PdfReader } = require("pdfreader");
 
-var rows = {}; // indexed by y-position
+let rows = {}; // indexed by y-position
 
-function printRows() {
+function flushRows() {
   Object.keys(rows) // => array of y-positions (type: float)
     .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
     .forEach((y) => console.log((rows[y] || []).join("")));
+  rows = {}; // clear rows for next page
 }
 
-new pdfreader.PdfReader().parseFileItems(
-  "CV_ErhanYasar.pdf",
-  function (err, item) {
-    if (!item || item.page) {
-      // end of file, or page
-      printRows();
-      console.log("PAGE:", item.page);
-      rows = {}; // clear rows for next page
-    } else if (item.text) {
-      // accumulate text items into rows object, per line
-      (rows[item.y] = rows[item.y] || []).push(item.text);
-    }
+new PdfReader().parseFileItems("test/sample.pdf", (err, item) => {
+  if (err) {
+    console.error({ err });
+  } else if (!item) {
+    flushRows();
+    console.log("END OF FILE");
+  } else if (item.page) {
+    flushRows(); // print the rows of the previous page
+    console.log("PAGE:", item.page);
+  } else if (item.text) {
+    // accumulate text items into rows object, per line
+    (rows[item.y] = rows[item.y] || []).push(item.text);
   }
-);
+});
 ```
 
 Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm-pdfreader-example).
@@ -235,10 +206,10 @@ Fork this example from [parsing a CV/résumé](https://github.com/adrienjoly/npm
 
 ```javascript
 new PdfReader({ password: "YOUR_PASSWORD" }).parseFileItems(
-  "sample-with-password.pdf",
+  "test/sample-with-password.pdf",
   function (err, item) {
-    if (err) callback(err);
-    else if (!item) callback();
+    if (err) console.error(err);
+    else if (!item) console.warn("end of file");
     else if (item.text) console.log(item.text);
   }
 );
@@ -253,7 +224,7 @@ Rule instances expose "accumulators": methods that defines the data extraction s
 Example:
 
 ```javascript
-var processItem = Rule.makeItemProcessor([
+const processItem = Rule.makeItemProcessor([
   Rule.on(/^Hello \"(.*)\"$/)
     .extractRegexpValues()
     .then(displayValue),
@@ -265,8 +236,9 @@ var processItem = Rule.makeItemProcessor([
     .accumulateAfterHeading()
     .then(displayValue),
 ]);
-new PdfReader().parseFileItems("sample.pdf", function (err, item) {
-  processItem(item);
+new PdfReader().parseFileItems("test/sample.pdf", (err, item) => {
+  if (err) console.error(err);
+  else processItem(item);
 });
 ```
 
