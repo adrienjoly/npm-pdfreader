@@ -22,16 +22,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install deps
-        run: npm ci
-        env:
-          CI: true
+      - run: npm ci # install dependencies
       - run: npm test
-        env:
-          CI: true
       - run: npm run prettier:check
-        env:
-          CI: true
 
   release:
     needs: check
