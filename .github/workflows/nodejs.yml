@@ -9,13 +9,12 @@ on:
       - master
 
 jobs:
+  # Make sure that pdfreader can still run on old Node.js versions
   old-node:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [8.x, 10.x]
-
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
@@ -25,13 +24,12 @@ jobs:
       - run: npm ci # install dependencies
       - run: node parse.js test/sample.pdf
 
-  check:
+  # Prevent functional regressions on supported Node.js versions
+  tests:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
-
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
@@ -40,10 +38,23 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci # install dependencies
       - run: npm test
+
+  # Checks that files are formatted consistently
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: npm ci # install dependencies
       - run: npm run prettier:check
 
   release:
-    needs: check
+    needs:
+      - tests
+      - old-node
+      - formatting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
