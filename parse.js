@@ -22,7 +22,11 @@ if (!filename) {
   console.error("please provide the name of a PDF file");
 } else {
   console.warn("printing raw items from file:", filename, "...");
-  printRawItems(filename, function () {
+  printRawItems(filename, function (err) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
     console.warn("done.");
   });
 }

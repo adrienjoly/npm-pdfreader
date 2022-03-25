@@ -1,72 +1,77 @@
-var LOG = require("../lib/LOG.js").toggle(false);
-var lib = require("../");
-var PdfReader = lib.PdfReader;
-var Rule = lib.Rule;
+const test = require("ava");
+const LOG = require("../lib/LOG.js").toggle(false);
+const lib = require("../");
+const PdfReader = lib.PdfReader;
+const Rule = lib.Rule;
 
-var TESTFILE = "./test/sample.pdf";
-var TESTFILE_WITH_PASSWORD = "./test/sample-with-password.pdf";
+const TESTFILE = "./test/sample.pdf";
+const TESTFILE_WITH_PASSWORD = "./test/sample-with-password.pdf";
 
-// step 1: print raw items
-
-function printRawItems(callback) {
-  new PdfReader().parseFileItems(TESTFILE, function (err, item) {
-    if (err) callback(err);
-    else if (!item) callback();
-    else console.log(item);
+test("parse raw items from pdf file", async (t) => {
+  const res = new Promise((resolve, reject) => {
+    const items = [];
+    new PdfReader().parseFileItems(TESTFILE, (err, item) => {
+      if (err) reject(err);
+      else if (!item) resolve(items);
+      else items.push(item);
+    });
   });
-}
-
-// step 2
-
-function parseData(callback) {
-  function displayValue(value) {
-    console.log("extracted value:", value);
-  }
-  function displayTable(table) {
-    for (var i = 0; i < table.length; ++i) console.log(table[i].join("\t"));
-  }
-  var rules = [
-    Rule.on(/^Hello \"(.*)\"$/)
-      .extractRegexpValues()
-      .then(displayValue),
-    Rule.on(/^Value\:/)
-      .parseNextItemValue()
-      .then(displayValue),
-    Rule.on(/^c1$/).parseTable(3).then(displayTable),
-    Rule.on(/^Values\:/)
-      .accumulateAfterHeading()
-      .then(displayValue),
-  ];
-  var processItem = Rule.makeItemProcessor(rules);
-  new PdfReader().parseFileItems(TESTFILE, function (err, item) {
-    if (err) callback(err);
-    else {
-      processItem(item);
-      if (!item) callback(err, item);
-    }
-  });
-}
-
-function openPDFWithPassword() {
-  new PdfReader({ password: "password" }).parseFileItems(
-    TESTFILE_WITH_PASSWORD,
-    function (err, item) {
-      // do nothing
-    }
-  );
-}
-
-// run tests
-
-console.log("\ntest 1: raw items from sample.pdf\n");
-printRawItems(function () {
-  console.log("\ntest 2: parse values from sample.pdf\n");
-  parseData(function () {
-    console.log("\ndone.\n");
-  });
+  t.snapshot(await res);
 });
 
-// check if can open pdf with user password
+test("parse structured content from pdf file, using rules", async (t) => {
+  const res = new Promise((resolve, reject) => {
+    const content = [];
+    const rules = [
+      Rule.on(/^Hello \"(.*)\"$/)
+        .extractRegexpValues()
+        .then((value) => content.push({ extractRegexpValues: value })),
+      Rule.on(/^Value\:/)
+        .parseNextItemValue()
+        .then((value) => content.push({ parseNextItemValue: value })),
+      Rule.on(/^c1$/)
+        .parseTable(3)
+        .then((table) =>
+          content.push({
+            "parseTable.renderMatrix": lib.parseTable.renderMatrix(
+              table.matrix
+            ),
+            "parseTable.renderItems": lib.parseTable.renderItems(table.items),
+          })
+        ),
+      Rule.on(/^Values\:/)
+        .accumulateAfterHeading()
+        .then((value) => content.push({ accumulateAfterHeading: value })),
+    ];
+    const processItem = Rule.makeItemProcessor(rules);
+    new PdfReader().parseFileItems(TESTFILE, (err, item) => {
+      if (err) reject(err);
+      else {
+        processItem(item);
+        if (!item) resolve(content);
+      }
+    });
+  });
+  t.snapshot(await res);
+});
 
-console.log("\ntest 3: should open sample-with-password.pdf\n");
-openPDFWithPassword();
+test("support pdf file with password", async (t) => {
+  const promise = new Promise((resolve, reject) =>
+    new PdfReader({ password: "password" }).parseFileItems(
+      TESTFILE_WITH_PASSWORD,
+      (err, item) => {
+        if (err) reject(err);
+        else if (!item) resolve();
+      }
+    )
+  );
+  await t.notThrowsAsync(promise);
+});
+
+test("sample scripts should print raw items from pdf file", async (t) => {
+  const { execa } = await import("execa");
+  const { stdout, stderr } = await execa("npm run test:samples", {
+    shell: true, // needed in order to run npm commands with execa
+  });
+  t.snapshot({ stdout, stderr });
+});

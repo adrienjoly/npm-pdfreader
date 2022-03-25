@@ -7,12 +7,9 @@
     "prettier:print": "prettier --list-different \"./**/*.js\" \"./**/*.md\"",
     "prettier:check": "npm run -s prettier:print 1>&2; exit $(npm run -s prettier:print | wc -l)",
     "prettier:fix": "prettier \"./**/*.js\" \"./**/*.md\" --write --end-of-line lf",
-    "test:diff:buffer": "node parseAsBuffer.js test/sample.pdf >test/test-buffer-snapshot.log; git --no-pager diff test/test-buffer-snapshot.log 1>&2; exit $(git --no-pager diff test/test-buffer-snapshot.log | wc -l)",
-    "test:diff:file": "node test/test.js >test/test-snapshot.log; git --no-pager diff test/test-snapshot.log 1>&2; exit $(git --no-pager diff test/test-snapshot.log | wc -l)",
-    "test:diff": "npm run -s test:diff:file && npm run -s test:diff:buffer",
-    "test:sample": "node test/test.js && node parseAsBuffer.js test/sample.pdf",
-    "test:functional": "npm run -s test:sample && npm run -s test:diff",
-    "test": "npm run -s test:functional && echo ✅  All tests passed.",
+    "test:samples": "node parse.js test/sample.pdf && node parseAsBuffer.js test/sample.pdf",
+    "test:update": "ava --update-snapshots",
+    "test": "ava",
     "lint": "eslint .",
     "semantic-release": "semantic-release"
   },
@@ -47,9 +44,11 @@
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/npm": "^7.1.3",
+    "ava": "^4.1.0",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "execa": "^6.1.0",
     "prettier": "2.3.0",
     "semantic-release": "^17.4.3"
   }

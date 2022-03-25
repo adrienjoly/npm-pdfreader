@@ -15,9 +15,10 @@ Summary:
 - [Rule-based data extraction](#rule-based-data-extraction)
 - [Troubleshooting & FAQ](#troubleshooting--faq)
 
-## Installation, tests and CLI usage (make sure node v8 or v10)
+## Installation, tests and CLI usage
 
 ```sh
+nvm use # optional, to switch to the recommended version of Node.js
 npm install pdfreader
 cd node_modules/pdfreader
 npm test
