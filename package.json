@@ -7,11 +7,9 @@
     "prettier:print": "prettier --list-different \"./**/*.js\" \"./**/*.md\"",
     "prettier:check": "npm run -s prettier:print 1>&2; exit $(npm run -s prettier:print | wc -l)",
     "prettier:fix": "prettier \"./**/*.js\" \"./**/*.md\" --write --end-of-line lf",
-    "test:diff:buffer": "node parseAsBuffer.js test/sample.pdf >test/test-buffer-snapshot.log; git --no-pager diff test/test-buffer-snapshot.log 1>&2; exit $(git --no-pager diff test/test-buffer-snapshot.log | wc -l)",
-    "test:sample": "node parseAsBuffer.js test/sample.pdf",
-    "test:legacy": "npm run -s test:sample && npm run -s test:diff:buffer && echo ✅  All tests passed.",
-    "test": "ava",
+    "test:samples": "node parse.js test/sample.pdf && node parseAsBuffer.js test/sample.pdf",
     "test:update": "ava --update-snapshots",
+    "test": "ava",
     "lint": "eslint .",
     "semantic-release": "semantic-release"
   },
@@ -50,6 +48,7 @@
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "execa": "^6.1.0",
     "prettier": "2.3.0",
     "semantic-release": "^17.4.3"
   }

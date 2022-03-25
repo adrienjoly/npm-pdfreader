@@ -65,3 +65,11 @@ test("support pdf file with password", async (t) => {
   );
   await t.notThrowsAsync(promise);
 });
+
+test("sample scripts should print raw items from pdf file", async (t) => {
+  const { execa } = await import("execa");
+  const { stdout, stderr } = await execa("npm run test:samples", {
+    shell: true, // needed in order to run npm commands
+  });
+  t.snapshot({ stdout, stderr });
+});
