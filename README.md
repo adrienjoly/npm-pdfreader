@@ -1,4 +1,4 @@
-# pdfreader ![Node CI](https://github.com/adrienjoly/npm-pdfreader/workflows/Node%20CI/badge.svg) [![Code Quality](https://api.codacy.com/project/badge/Grade/73d37dbb0ff84795acf65a55c5936d83)](https://www.codacy.com/app/adrien-joly/npm-pdfreader?utm_source=github.com&utm_medium=referral&utm_content=adrienjoly/npm-pdfreader&utm_campaign=Badge_Grade)
+# pdfreader ![Node CI](https://github.com/adrienjoly/npm-pdfreader/workflows/Node%20CI/badge.svg) [![Code Quality](https://api.codacy.com/project/badge/Grade/73d37dbb0ff84795acf65a55c5936d83)](https://app.codacy.com/gh/adrienjoly/npm-pdfreader?utm_source=github.com&utm_medium=referral&utm_content=adrienjoly/npm-pdfreader&utm_campaign=Badge_Grade)
 
 Read text and parse tables from PDF files.
 
