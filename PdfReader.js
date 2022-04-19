@@ -46,8 +46,7 @@ function PdfReader(options) {
  * parseFileItems: calls itemHandler(error, item) on each item parsed from the pdf file
  **/
 PdfReader.prototype.parseFileItems = function (pdfFilePath, itemHandler) {
-  itemHandler(null, {file: {path: pdfFilePath}});
-
+  itemHandler(null, { file: { path: pdfFilePath } });
   var pdfParser;
   if (this.options.password) {
     pdfParser = new PFParser(null, null, this.options.password);
@@ -67,8 +66,7 @@ PdfReader.prototype.parseFileItems = function (pdfFilePath, itemHandler) {
  * parseBuffer: calls itemHandler(error, item) on each item parsed from the pdf file received as a buffer
  */
 PdfReader.prototype.parseBuffer = function (pdfBuffer, itemHandler) {
-  itemHandler(null, {file: {buffer: pdfBuffer}});
-
+  itemHandler(null, { file: { buffer: pdfBuffer } });
   var pdfParser;
   if (this.options.password) {
     pdfParser = new PFParser(null, null, this.options.password);
