@@ -51,5 +51,8 @@
     "execa": "^6.1.0",
     "prettier": "2.6.1",
     "semantic-release": "^19.0.2"
+  },
+  "engines": {
+    "node": ">=14"
   }
 }
