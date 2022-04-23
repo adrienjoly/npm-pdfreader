@@ -1,4 +1,4 @@
 {
   "extends": ["plugin:prettier/recommended"],
-  "parserOptions": { "ecmaVersion": 6 }
+  "parserOptions": { "ecmaVersion": 2020 }
 }

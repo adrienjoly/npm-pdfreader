@@ -7,6 +7,7 @@ Supports **tabular data** with automatic column detection, and **rule-based pars
 Dependencies: it is based on [pdf2json](https://www.npmjs.com/package/pdf2json), which itself relies on Mozilla's [pdf.js](https://github.com/mozilla/pdf.js/).
 
 ℹ️ Important notes:
+
 - This module is meant to be run using Node.js only. **It does not work from a web browser.**
 - This module extracts text entries from PDF files. It does not support photographed text. If you cannot select text from the PDF file, **you may need to use OCR software first**.
 
