@@ -1,5 +1,7 @@
-var LOG = require("./lib/LOG.js").toggle(false);
-var PdfReader = require("./index.js").PdfReader;
+import { toggle } from "./lib/LOG.js";
+import { PdfReader } from "./index.js";
+
+toggle(false);
 
 function printRawItems(filename, callback) {
   new PdfReader().parseFileItems(filename, function (err, item) {
