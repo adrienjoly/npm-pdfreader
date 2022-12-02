@@ -1,5 +1,6 @@
 {
   "name": "pdfreader",
+  "type": "module",
   "version": "0.0.0-development",
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
   "main": "index.js",
@@ -38,7 +39,7 @@
   },
   "homepage": "https://github.com/adrienjoly/npm-pdfreader",
   "dependencies": {
-    "pdf2json": "2.0.1"
+    "pdf2json": "3.0.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",

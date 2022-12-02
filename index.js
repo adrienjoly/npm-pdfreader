@@ -1,8 +1,16 @@
-exports.PdfReader = require("./PdfReader");
-exports.Rule = require("./Rule");
-exports.LOG = require("./lib/LOG.js");
-exports.parseTable = require("./lib/parseTable.js");
-exports.parseColumns = require("./lib/parseColumns.js");
-exports.SequentialParser = require("./lib/SequentialParser.js"); // experimental
-exports.TableParser = require("./lib/TableParser.js");
-exports.ColumnsParser = require("./lib/ColumnsParser.js");
+export { PdfReader } from "./PdfReader.js";
+export { Rule } from "./Rule.js";
+export * as LOG from "./lib/LOG.js";
+import * as parseTableExports from "./lib/parseTable.js";
+export const parseTable = Object.assign(
+  parseTableExports.parseTable,
+  parseTableExports
+);
+import * as parseColumnsExports from "./lib/parseColumns.js";
+export const parseColumns = Object.assign(
+  parseColumnsExports.parseColumns,
+  parseColumnsExports
+);
+export { SequentialParser } from "./lib/SequentialParser.js"; // experimental
+export { TableParser } from "./lib/TableParser.js";
+export { ColumnsParser } from "./lib/ColumnsParser.js";

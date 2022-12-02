@@ -1,7 +1,10 @@
-const assert = require("assert");
-const test = require("ava");
-const LOG = require("../lib/LOG.js").toggle(false);
-const lib = require("../");
+import assert from "assert";
+import test from "ava";
+import { toggle } from "../lib/LOG.js";
+import * as lib from "../index.js";
+
+toggle(false);
+
 const PdfReader = lib.PdfReader;
 const Rule = lib.Rule;
 

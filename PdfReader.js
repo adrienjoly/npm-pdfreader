@@ -11,8 +11,8 @@
  *
  **/
 
-var LOG = require("./lib/LOG.js");
-var PFParser = require("pdf2json/pdfparser"); // doc: https://github.com/modesty/pdf2json
+import { log as LOG } from "./lib/LOG.js";
+import PDFParser from "pdf2json"; // doc: https://github.com/modesty/pdf2json
 
 function forEachItem(pdf, handler) {
   var pageNumber = 0;
@@ -37,7 +37,7 @@ function forEachItem(pdf, handler) {
   handler();
 }
 
-function PdfReader(options) {
+export function PdfReader(options) {
   LOG("PdfReader"); // only displayed if LOG.js was first loaded with `true` as init parameter
   this.options = options || {};
 }
@@ -49,9 +49,9 @@ PdfReader.prototype.parseFileItems = function (pdfFilePath, itemHandler) {
   itemHandler(null, { file: { path: pdfFilePath } });
   var pdfParser;
   if (this.options.password) {
-    pdfParser = new PFParser(null, null, this.options.password);
+    pdfParser = new PDFParser(null, null, this.options.password);
   } else {
-    pdfParser = new PFParser();
+    pdfParser = new PDFParser();
   }
 
   pdfParser.on("pdfParser_dataError", itemHandler);
@@ -69,9 +69,9 @@ PdfReader.prototype.parseBuffer = function (pdfBuffer, itemHandler) {
   itemHandler(null, { file: { buffer: pdfBuffer } });
   var pdfParser;
   if (this.options.password) {
-    pdfParser = new PFParser(null, null, this.options.password);
+    pdfParser = new PDFParser(null, null, this.options.password);
   } else {
-    pdfParser = new PFParser();
+    pdfParser = new PDFParser();
   }
 
   pdfParser.on("pdfParser_dataError", itemHandler);
@@ -81,5 +81,3 @@ PdfReader.prototype.parseBuffer = function (pdfBuffer, itemHandler) {
   var verbosity = this.options.debug ? 1 : 0;
   pdfParser.parseBuffer(pdfBuffer, verbosity);
 };
-
-module.exports = PdfReader;

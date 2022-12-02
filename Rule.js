@@ -4,13 +4,15 @@
  * This content is released under the MIT License.
  **/
 
-var LOG = require("./lib/LOG.js");
+import { log as LOG } from "./lib/LOG.js";
+import { parseColumns } from "./lib/parseColumns.js";
+import { parseTable } from "./lib/parseTable.js";
 
 /**
  * regexp: a regular expression which a PDF item's text must match in order to execute that rule.
  * => a Rule object exposes "accumulators": methods that defines the data extraction strategy of a rule.
  **/
-function Rule(regexp) {
+export function Rule(regexp) {
   this.regexp = regexp;
   var self = this;
   // proxy accumulators methods
@@ -180,11 +182,9 @@ Rule.addAccumulator("accumulateFromSameX", function () {
 /**
  * This accumulator will store a table by detecting its columns, given their names.
  **/
-Rule.addAccumulator("parseColumns", require("./lib/parseColumns.js"));
+Rule.addAccumulator("parseColumns", parseColumns);
 
 /**
  * This accumulator will store a table by detecting its columns, given their count.
  **/
-Rule.addAccumulator("parseTable", require("./lib/parseTable.js"));
-
-module.exports = Rule;
+Rule.addAccumulator("parseTable", parseTable);

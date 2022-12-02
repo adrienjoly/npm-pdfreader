@@ -48,7 +48,7 @@ It's up to your callback to process these items into a data structure of your ch
 For example:
 
 ```javascript
-const { PdfReader } = require("pdfreader");
+import { PdfReader } from "pdfreader";
 
 new PdfReader().parseFileItems("test/sample.pdf", (err, item) => {
   if (err) console.error("error:", err);
@@ -75,8 +75,8 @@ new PdfReader({ password: "YOUR_PASSWORD" }).parseFileItems(
 As above, but reading from a buffer in memory rather than from a file referenced by path. For example:
 
 ```javascript
-const fs = require("fs");
-const { PdfReader } = require("pdfreader");
+import fs from "fs";
+import { PdfReader } from "pdfreader";
 
 fs.readFile("test/sample.pdf", (err, pdfBuffer) => {
   // pdfBuffer contains the file content
