@@ -20,13 +20,25 @@ Summary:
 
 ## Installation, tests and CLI usage
 
+After installing [Node.js](https://nodejs.org/):
+
 ```sh
-nvm use # optional, to switch to the recommended version of Node.js
-npm install pdfreader
-cd node_modules/pdfreader
+git clone https://github.com/adrienjoly/npm-pdfreader.git
+cd npm-pdfreader
+npm install
 npm test
 node parse.js test/sample.pdf
 ```
+
+## Installation into an existing project
+
+To install `pdfreader` as a dependency of your Node.js project:
+
+```sh
+npm install pdfreader
+```
+
+Then, see below for examples of use.
 
 ## Raw PDF reading
 
