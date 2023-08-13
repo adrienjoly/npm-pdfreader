@@ -6,6 +6,8 @@ Supports **tabular data** with automatic column detection, and **rule-based pars
 
 Dependencies: it is based on [pdf2json](https://www.npmjs.com/package/pdf2json), which itself relies on Mozilla's [pdf.js](https://github.com/mozilla/pdf.js/).
 
+🆕 Now includes TypeScript type definitions!
+
 ℹ️ Important notes:
 
 - This module is meant to be run using Node.js only. **It does not work from a web browser.**
