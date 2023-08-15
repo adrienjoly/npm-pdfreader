@@ -15,7 +15,7 @@ export type DataEntry = {
 export type ItemHandler = (err: Error, data: DataEntry) => void;
 
 export declare class PdfReader {
-  constructor(opts: InitOptions | null): PdfReader;
+  constructor(opts: InitOptions | null);
   parseFileItems(pdfFilePath: string, itemHandler: ItemHandler): void;
   parseBuffer(buffer: Buffer, itemHandler: ItemHandler): void;
 }
