@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "target": "ES6"
+    // Other compiler options...
+  },
+  "include": ["./types/*.d.ts", "./types/*.d.ts"],
+  "exclude": ["node_modules"]
+}
