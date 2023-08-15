@@ -1,7 +1,6 @@
 import { Transform, Readable, TransformOptions } from "stream";
 import { EventEmitter } from "events";
 import * as fs from "fs";
-import { log, toggle } from "./LOG.js";
 
 declare module "pdf2json/lib/pdf.js" {
   class PDFJSClass extends EventEmitter {
