@@ -1,4 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "prettier.singleQuote": false
+  "prettier.singleQuote": false,
+  "editor.acceptSuggestionOnEnter": "on"
 }
