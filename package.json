@@ -51,7 +51,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "execa": "^6.1.0",
     "prettier": "2.6.1",
-    "semantic-release": "^19.0.2"
+    "semantic-release": "^21.0.1"
   },
   "engines": {
     "node": ">=14"
