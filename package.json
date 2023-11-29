@@ -4,6 +4,10 @@
   "version": "0.0.0-development",
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
   "main": "index.js",
+  "exports": {
+    "import": "./index.js",
+    "require": "./index.cjs"
+  },
   "scripts": {
     "prettier:print": "prettier --list-different \"./**/*.js\" \"./**/*.md\"",
     "prettier:check": "npm run -s prettier:print 1>&2; exit $(npm run -s prettier:print | wc -l)",
@@ -39,19 +43,20 @@
   },
   "homepage": "https://github.com/adrienjoly/npm-pdfreader",
   "dependencies": {
-    "pdf2json": "3.0.1"
+    "pdf2json": "^3.0.5"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/npm": "^9.0.1",
-    "ava": "^4.1.0",
-    "eslint": "^8.11.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "execa": "^6.1.0",
-    "prettier": "2.6.1",
-    "semantic-release": "^19.0.2"
+    "@semantic-release/npm": "^11.0.1",
+    "ava": "^5.3.1",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "execa": "^8.0.1",
+    "prettier": "^3.1.0",
+    "rollup": "^4.6.0",
+    "semantic-release": "^22.0.8"
   },
   "engines": {
     "node": ">=14"
