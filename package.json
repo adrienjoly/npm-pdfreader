@@ -16,7 +16,8 @@
     "test:update": "ava --update-snapshots",
     "test": "ava",
     "lint": "eslint .",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "build:cjs": "npx rollup index.js --file index.cjs --format cjs"
   },
   "repository": {
     "type": "git",
