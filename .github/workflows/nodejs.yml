@@ -52,6 +52,8 @@ jobs:
           node-version: 16
       - name: Install dependencies
         run: npm ci
+      - name: Build commonjs
+        run: npm run build:cjs
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
