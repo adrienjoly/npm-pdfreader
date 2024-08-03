@@ -135,8 +135,10 @@ Rule.addAccumulator = function (methodName, methodBuilder) {
 };
 
 /**
- * This accumulator will store the values extracted by the regexp of the Rule object,
+ * This accumulator will store the group values extracted by the regexp of the Rule object,
  * on the current matching PDF item, into an array.
+ *
+ * E.g. with regex: /hello ([a-z]+)/, the text "hello world" will yield "world".
  **/
 Rule.addAccumulator("extractRegexpValues", function () {
   var matches = this.regexp.exec(this.currentItem.text);
