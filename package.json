@@ -3,16 +3,19 @@
   "type": "module",
   "version": "0.0.0-development",
   "description": "Read text and parse tables from PDF files. Supports tabular data with automatic column detection, and rule-based parsing.",
-  "main": "index.js",
+  "main": "dist/index.cjs",
+  "module": "./index.js",
+  "typings": "./index.d.ts",
   "scripts": {
-    "prettier:print": "prettier --list-different \"./**/*.js\" \"./**/*.md\"",
+    "prettier:print": "prettier --list-different \"./**/*.js\" \"./**/*.md\" \"./**/*.d.ts\"",
     "prettier:check": "npm run -s prettier:print 1>&2; exit $(npm run -s prettier:print | wc -l)",
-    "prettier:fix": "prettier \"./**/*.js\" \"./**/*.md\" --write --end-of-line lf",
+    "prettier:fix": "prettier \"./**/*.js\" \"./**/*.md\" \"./**/*.d.ts\" --write --end-of-line lf",
     "test:samples": "node parse.js test/sample.pdf && node parseAsBuffer.js test/sample.pdf",
     "test:update": "ava --update-snapshots",
     "test": "ava",
     "lint": "eslint .",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "build:cjs": "rollup index.js --file dist/index.cjs --format cjs"
   },
   "repository": {
     "type": "git",
@@ -39,7 +42,7 @@
   },
   "homepage": "https://github.com/adrienjoly/npm-pdfreader",
   "dependencies": {
-    "pdf2json": "3.0.1"
+    "pdf2json": "3.1.3"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
@@ -51,7 +54,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "execa": "^6.1.0",
     "prettier": "2.6.1",
-    "semantic-release": "^19.0.2"
+    "semantic-release": "^19.0.2",
+    "rollup": "^4.19.1"
   },
   "engines": {
     "node": ">=14"
