@@ -20,7 +20,6 @@ export declare class PdfReader {
   parseBuffer(buffer: Buffer, itemHandler: ItemHandler): void;
 }
 
-
 export type Item = {
   x: number;
   y: number;
@@ -29,12 +28,12 @@ export type Item = {
   A: string;
   clr: number;
   R: {
-    T:string;
-    S:number;
-    TS:any[];
+    T: string;
+    S: number;
+    TS: any[];
   }[];
-  text:string;
-}
+  text: string;
+};
 
 export class TableParser {
   private rows: { [key: string]: Item[] };
