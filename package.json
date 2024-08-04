@@ -55,7 +55,7 @@
     "execa": "^6.1.0",
     "prettier": "2.6.1",
     "semantic-release": "^19.0.2",
-    "rollup": "^4.19.1".
+    "rollup": "^4.19.1",
     "typescript": "^5.1.6"
   },
   "engines": {
