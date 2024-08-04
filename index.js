@@ -1,12 +1,14 @@
+import * as parseTableExports from "./lib/parseTable.js";
+import * as parseColumnsExports from "./lib/parseColumns.js";
+
 export { PdfReader } from "./PdfReader.js";
 export { Rule } from "./Rule.js";
 export * as LOG from "./lib/LOG.js";
-import * as parseTableExports from "./lib/parseTable.js";
 export const parseTable = Object.assign(
   parseTableExports.parseTable,
   parseTableExports
 );
-import * as parseColumnsExports from "./lib/parseColumns.js";
+
 export const parseColumns = Object.assign(
   parseColumnsExports.parseColumns,
   parseColumnsExports
