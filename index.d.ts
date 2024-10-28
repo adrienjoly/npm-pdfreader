@@ -35,6 +35,14 @@ export type Item = {
   text: string;
 };
 
+export type RuleAccumulator = (item: Item) => boolean | void;
+export type RuleHandler<T = any> = (value: T) => void;
+
+export interface TableResult {
+    matrix: string[][];
+    items: Item[];
+}
+
 export class TableParser {
   private rows: { [key: string]: Item[] };
   constructor();
@@ -46,4 +54,28 @@ export class TableParser {
   getMatrix(): Item[][][];
   getCleanMatrix(options?: { collisionSeparator: string }): string[][];
   renderMatrix(): string;
+}
+
+export class Rule {
+  static on(regexp: RegExp): Rule;
+  static after(regexp: RegExp): Rule;
+  static makeItemProcessor(rules: Rule[]): (item: DataEntry) => void;
+  static addAccumulator(methodName: string, methodBuilder: Function): void;
+
+  constructor(regexp: RegExp);
+
+  // Accumulator methods
+  extractRegexpValues(): Rule;
+  parseNextItemValue(): Rule;
+  accumulateAfterHeading(): Rule;
+  accumulateFromSameX(): Rule;
+  parseColumns(...args: any[]): Rule;
+  parseTable(columnCount: number): Rule & {
+    then(handler: (result: TableResult) => void): Rule;
+  };
+
+  then<T>(handler: RuleHandler<T>): Rule;
+
+  private test(item: Item): RuleAccumulator | undefined;
+  private whenDone(callback: () => void): void;
 }
