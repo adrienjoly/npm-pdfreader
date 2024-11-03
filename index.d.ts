@@ -39,8 +39,8 @@ export type RuleAccumulator = (item: Item) => boolean | void;
 export type RuleHandler<T = any> = (value: T) => void;
 
 export interface TableResult {
-    matrix: string[][];
-    items: Item[];
+  matrix: string[][];
+  items: Item[];
 }
 
 export class TableParser {
