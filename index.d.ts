@@ -1,4 +1,8 @@
-export type InitOptions = { password?: string; debug?: boolean, signal?: AbortSignal };
+export type InitOptions = {
+  password?: string;
+  debug?: boolean;
+  signal?: AbortSignal;
+};
 export type Error = null | string;
 
 export type DataEntry = {
