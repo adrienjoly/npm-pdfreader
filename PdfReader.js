@@ -60,6 +60,10 @@ PdfReader.prototype.parseFileItems = function (pdfFilePath, itemHandler) {
   });
   var verbosity = this.options.debug ? 1 : 0;
   pdfParser.loadPDF(pdfFilePath, verbosity);
+
+  this.options.signal?.addEventListener("abort", function () {
+    pdfParser.destroy();
+  });
 };
 
 /**
@@ -80,4 +84,8 @@ PdfReader.prototype.parseBuffer = function (pdfBuffer, itemHandler) {
   });
   var verbosity = this.options.debug ? 1 : 0;
   pdfParser.parseBuffer(pdfBuffer, verbosity);
+
+  this.options.signal?.addEventListener("abort", function () {
+    pdfParser.destroy();
+  });
 };
