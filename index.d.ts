@@ -16,7 +16,7 @@ export type DataEntry = {
   };
 } | null;
 
-export type ItemHandler = (err: Error, data: DataEntry) => void;
+export type ItemHandler = (err: Error, data: DataEntry & Item) => void;
 
 export declare class PdfReader {
   constructor(opts?: InitOptions | null);
